@@ -42,12 +42,11 @@ services:
       DATABASE_URL: 'postgresql://${postgres_user}:${postgres_password}@${postgres_host}:5432/blockscout?ssl=false'
       ECTO_USE_SSL: "false"
       PORT: "4000"
-      SUBNETWORK: "Supernets"
       HEALTHY_BLOCKS_PERIOD: "60"
-      NETWORK: "(Polygon)"
-      NETWORK_ICON: "_network_icon.html"
-      COIN: "MATIC"
-      COIN_NAME: "MATIC"
+      NETWORK: "Omni"
+      SUBNETWORK: "Omni Testnet"
+      COIN: "OMNI"
+      COIN_NAME: "OMNI"
       TXS_STATS_DAYS_TO_COMPILE_AT_INIT: "1"
       COIN_BALANCE_HISTORY_DAYS: "90"
       POOL_SIZE: "20"
@@ -56,10 +55,19 @@ services:
       INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER: "true"
       INDEXER_DISABLE_INTERNAL_TRANSACTIONS_FETCHER: "true"
       CHAIN_ID: '${chain_id}'
-      GRAPHIQL_TRANSACTION: "0x728e0551d657e418762b14a264a4d120da3f5277a690db1e8b2a5781848b8589"
       MICROSERVICE_SC_VERIFIER_ENABLED: "true"
       MICROSERVICE_SC_VERIFIER_URL: '${rust_verification_service_url}'
       INDEXER_MEMORY_LIMIT: "3"
+      SUPPORTED_CHAINS: "[]"
+      LOGO: "/images/omni_logo.svg"
+      APPS_MENU: "false"
+      FOOTER_LOGO: "/images/omni_logo.svg"
+      FOOTER_CHAT_LINK: "https://discord.com/invite/bKNXmaX9VD"
+      FOOTER_FORUM_LINK_ENABLED: "false"
+      FOOTER_TELEGRAM_LINK_ENABLED: "true"
+      FOOTER_TELEGRAM_LINK: "https://t.me/OmniFDN"
+      FOOTER_GITHUB_LINK: "https://github.com/omni-network"
+      FOOTER_LINK_TO_OTHER_EXPLORERS: "false"
     ports:
       - 4000:4000
     volumes:
