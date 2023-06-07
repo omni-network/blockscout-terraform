@@ -9,6 +9,7 @@ provider "aws" {
 
 module "obs_internal_vpc" {
   source                                 = "./aws"
+  count                                  = var.deploy_internal_blockscout ? 1 : 0
   vpc_name                               = "obs-internal"
   vpc_cidr                               = "10.104.0.0/16"
   ssl_certificate_arn                    = var.ssl_certificate_arn
@@ -21,7 +22,7 @@ module "obs_internal_vpc" {
     chain_id                = "165"
   }
   tags = {
-    name              = "omni-internal-blockscout"
+    project           = "omni-internal-blockscout"
     terraform_managed = true
   }
 }
@@ -40,13 +41,13 @@ module "obs_testnet_vpc" {
     chain_id                = "165"
   }
   tags = {
-    name              = "omni-testnet-blockscout"
+    project           = "omni-testnet-blockscout"
     terraform_managed = true
   }
 }
 
 output "internal_blockscout_url" {
-  value = module.obs_internal_vpc.blockscout_url
+  value = var.deploy_internal_blockscout ? module.obs_internal_vpc[0].blockscout_url : null
 }
 
 output "testnet_blockscout_url" {
