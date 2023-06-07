@@ -36,7 +36,7 @@ services:
       BLOCKSCOUT_VERSION: v5.1.3-beta
       ETHEREUM_JSONRPC_TRACE_URL: '${rpc_address}'
       ETHEREUM_JSONRPC_HTTP_URL: '${rpc_address}'
-      ETHEREUM_JSONRPC_VARIANT: "nethermind"
+      ETHEREUM_JSONRPC_VARIANT: "geth"
       HEART_BEAT_TIMEOUT: "30"
       CACHE_BLOCK_COUNT_PERIOD: "7200"
       DATABASE_URL: 'postgresql://${postgres_user}:${postgres_password}@${postgres_host}:5432/blockscout?ssl=false'
@@ -52,8 +52,6 @@ services:
       POOL_SIZE: "20"
       DISPLAY_TOKEN_ICONS: "true"
       FETCH_REWARDS_WAY: "manual"
-      INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER: "true"
-      INDEXER_DISABLE_INTERNAL_TRANSACTIONS_FETCHER: "true"
       CHAIN_ID: '${chain_id}'
       MICROSERVICE_SC_VERIFIER_ENABLED: "true"
       MICROSERVICE_SC_VERIFIER_URL: '${rust_verification_service_url}'
