@@ -19,6 +19,7 @@ module "obs_internal_vpc" {
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_docker_image
     rpc_address             = "http://internal-testnet-rpc.omni.network:8545"
+    ws_address              = "ws://internal-testnet-rpc.omni.network:8546"
     chain_id                = "165"
   }
   tags = {
@@ -38,6 +39,7 @@ module "obs_testnet_vpc" {
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_docker_image
     rpc_address             = "http://testnet-1-rpc.omni.network:8545"
+    ws_address              = "ws://testnet-1-rpc.omni.network:8546"
     chain_id                = "165"
   }
   tags = {
