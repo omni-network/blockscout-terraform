@@ -1,10 +1,20 @@
+variable "cloudflare_api_token" {
+  description = "The Cloudflare API token."
+  type        = string
+}
+
+variable "cloudflare_zone_id" {
+  description = "The Cloudflare zone ID."
+  type        = string
+}
+
 variable "ssl_certificate_arn" {
   description = "The ARN of the SSL Certificate for the load balancer. Find in AWS Certificate Manager."
   type        = string
 }
 
-variable "deploy_internal_blockscout" {
-  description = "Whether to deploy the internal blockscout service."
+variable "deploy_staging_blockscout" {
+  description = "Whether to deploy the staging blockscout service."
   type        = bool
   default     = true
 }
