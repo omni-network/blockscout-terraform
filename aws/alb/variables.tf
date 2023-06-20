@@ -22,6 +22,14 @@ variable "backend_port" {
 variable "health_check_path" {
   type = string
 }
+variable "health_check_port" {
+  type = string
+  default = "traffic-port"
+}
+variable "load_balancer_type" {
+  type = string
+  default = "application"
+}
 variable "tags" {
   type = any
 }

@@ -50,9 +50,9 @@ module "lb_microservices_sg" {
   egress_with_cidr_blocks = [
     {
       from_port   = 8050
-      to_port     = 8050
+      to_port     = 8051
       protocol    = "tcp"
-      description = "Microservices port"
+      description = "Microservices ports"
       cidr_blocks = var.existed_vpc_id == "" ? var.vpc_cidr : data.aws_vpc.selected[0].cidr_block
     }
   ]
@@ -70,9 +70,9 @@ module "microservices_sg" {
   ingress_with_cidr_blocks = [
     {
       from_port   = 8050
-      to_port     = 8050
+      to_port     = 8051
       protocol    = "tcp"
-      description = "Microservices port"
+      description = "Microservices ports"
       cidr_blocks = var.existed_vpc_id == "" ? var.vpc_cidr : data.aws_vpc.selected[0].cidr_block
       self        = true
     }
@@ -80,9 +80,9 @@ module "microservices_sg" {
   ingress_with_source_security_group_id = [
     {
       from_port                = 8050
-      to_port                  = 8050
+      to_port                  = 8051
       protocol                 = "tcp"
-      description              = "Microservices port"
+      description              = "Microservices ports"
       source_security_group_id = module.lb_microservices_sg.security_group_id
     }
   ]
@@ -458,17 +458,19 @@ module "alb" {
 }
 
 module "alb_verifier" {
-  count             = var.verifier_enabled ? 1 : 0
-  source            = "./alb"
-  name              = "${var.vpc_name != "" ? var.vpc_name : ""}-verifier"
-  internal          = true
-  vpc_id            = local.vpc_id_rule
-  subnets           = local.subnets_rule
-  backend_port      = 8050
-  health_check_path = "/api/v2/verifier/solidity/versions"
-  name_prefix       = "verif-"
-  security_groups   = module.lb_microservices_sg.security_group_id
-  tags              = local.final_tags
+  count                = var.verifier_enabled ? 1 : 0
+  source               = "./alb"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : ""}-verifier"
+  internal             = true
+  vpc_id               = local.vpc_id_rule
+  subnets              = local.subnets_rule
+  load_balancer_type   = "network"
+  backend_port         = 8051
+  health_check_path    = "/api/v2/verifier/solidity/versions"
+  health_check_port    = 8050
+  name_prefix          = "verif-"
+  security_groups      = module.lb_microservices_sg.security_group_id
+  tags                 = local.final_tags
 }
 
 module "alb_visualizer" {
