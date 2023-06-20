@@ -143,7 +143,7 @@ variable "blockscout_settings" {
     postgres_user                 = optional(string, "postgres")
     postgres_host                 = optional(string, "postgres")
     blockscout_docker_image       = optional(string, "blockscout/blockscout:latest")
-    rpc_address                   = optional(string, "http://internal-testnet-rpc.omni.network:8545")
+    rpc_address                   = optional(string, "http://staging.omni.network:8545")
     chain_id                      = optional(string, "165")
     rust_verification_service_url = optional(string, "https://sc-verifier.aws-k8s.blockscout.com/")
     ws_address                    = optional(string, "")
@@ -182,7 +182,7 @@ variable "verifier_replicas" {
 variable "verifier_settings" {
   description = "Settings of verifier"
   type = object({
-    docker_image                       = optional(string, "ghcr.io/blockscout/smart-contract-verifier:main")
+    docker_image                       = optional(string, "ghcr.io/blockscout/smart-contract-verifier:latest")
     solidity_fetcher_list_url          = optional(string, "https://solc-bin.ethereum.org/linux-amd64/list.json")
     solidity_refresh_versions_schedule = optional(string, "0 0 * * * * *")
     vyper_fetcher_list_url             = optional(string, "https://raw.githubusercontent.com/blockscout/solc-bin/main/vyper.list.json")
@@ -206,7 +206,7 @@ variable "sig_provider_instance_type" {
 variable "sig_provider_docker_image" {
   description = "Docker image of sig-provider"
   type        = string
-  default     = "ghcr.io/blockscout/sig-provider:main"
+  default     = "ghcr.io/blockscout/sig-provider:latest"
 }
 variable "sig_provider_replicas" {
   description = "Number of sig-provider replicas"
@@ -255,7 +255,7 @@ variable "stats_replicas" {
 variable "stats_docker_image" {
   description = "Docker image of stats"
   type        = string
-  default     = "ghcr.io/blockscout/stats:main"
+  default     = "ghcr.io/blockscout/stats:latest"
 }
 variable "stats_create_database" {
   description = "Create database in application start"
@@ -282,7 +282,7 @@ variable "eth_bytecode_db_replicas" {
 variable "eth_bytecode_db_docker_image" {
   description = "Docker image of eth-bytecode-db"
   type        = string
-  default     = "ghcr.io/blockscout/eth-bytecode-db:main"
+  default     = "ghcr.io/blockscout/eth-bytecode-db:latest"
 }
 variable "verifier_url" {
   description = "Url of verifier"
