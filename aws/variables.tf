@@ -120,7 +120,7 @@ variable "existed_private_subnets_ids" {
 }
 
 variable "block_devices" {
-  description = "List of block devices to be used for th instance"
+  description = "List of block devices to be used for the instance"
   type        = list(any)
   default     = []
 }
