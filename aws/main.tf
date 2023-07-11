@@ -217,7 +217,8 @@ module "ec2_database" {
 }
 
 module "ec2_asg_indexer" {
-  source = "./asg"
+  source        = "./asg"
+  block_devices = var.block_devices
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-indexer-instance"
   min_size             = 1
@@ -256,7 +257,8 @@ module "ec2_asg_indexer" {
 }
 
 module "ec2_asg_api_and_ui" {
-  source = "./asg"
+  source        = "./asg"
+  block_devices = var.block_devices
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-api-and-ui-instances"
   min_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
@@ -295,8 +297,9 @@ module "ec2_asg_api_and_ui" {
 }
 
 module "ec2_asg_verifier" {
-  count  = var.verifier_enabled ? 1 : 0
-  source = "./asg"
+  count         = var.verifier_enabled ? 1 : 0
+  source        = "./asg"
+  block_devices = var.block_devices
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-verifier-instance"
   min_size             = var.verifier_replicas
@@ -327,8 +330,9 @@ module "ec2_asg_verifier" {
 }
 
 module "ec2_asg_visualizer" {
-  count  = var.visualizer_enabled ? 1 : 0
-  source = "./asg"
+  count         = var.visualizer_enabled ? 1 : 0
+  source        = "./asg"
+  block_devices = var.block_devices
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-visualizer-instance"
   min_size             = var.visualizer_replicas
@@ -354,8 +358,9 @@ module "ec2_asg_visualizer" {
 }
 
 module "ec2_asg_sig_provider" {
-  count  = var.sig_provider_enabled ? 1 : 0
-  source = "./asg"
+  count         = var.sig_provider_enabled ? 1 : 0
+  source        = "./asg"
+  block_devices = var.block_devices
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-sig-provider-instance"
   min_size             = var.sig_provider_replicas
@@ -381,8 +386,9 @@ module "ec2_asg_sig_provider" {
 }
 
 module "ec2_asg_stats" {
-  count  = var.stats_enabled ? 1 : 0
-  source = "./asg"
+  count         = var.stats_enabled ? 1 : 0
+  source        = "./asg"
+  block_devices = var.block_devices
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-stats-instance"
   min_size             = var.stats_replicas
@@ -412,8 +418,9 @@ module "ec2_asg_stats" {
 }
 
 module "ec2_asg_eth_bytecode_db" {
-  count  = var.eth_bytecode_db_enabled ? 1 : 0
-  source = "./asg"
+  count         = var.eth_bytecode_db_enabled ? 1 : 0
+  source        = "./asg"
+  block_devices = var.block_devices
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-eth-bytecode-db-instance"
   min_size             = var.eth_bytecode_db_replicas
@@ -458,19 +465,19 @@ module "alb" {
 }
 
 module "alb_verifier" {
-  count                = var.verifier_enabled ? 1 : 0
-  source               = "./alb"
-  name                 = "${var.vpc_name != "" ? var.vpc_name : ""}-verifier"
-  internal             = true
-  vpc_id               = local.vpc_id_rule
-  subnets              = local.subnets_rule
-  load_balancer_type   = "network"
-  backend_port         = 8051
-  health_check_path    = "/api/v2/verifier/solidity/versions"
-  health_check_port    = 8050
-  name_prefix          = "verif-"
-  security_groups      = module.lb_microservices_sg.security_group_id
-  tags                 = local.final_tags
+  count              = var.verifier_enabled ? 1 : 0
+  source             = "./alb"
+  name               = "${var.vpc_name != "" ? var.vpc_name : ""}-verifier"
+  internal           = true
+  vpc_id             = local.vpc_id_rule
+  subnets            = local.subnets_rule
+  load_balancer_type = "network"
+  backend_port       = 8051
+  health_check_path  = "/api/v2/verifier/solidity/versions"
+  health_check_port  = 8050
+  name_prefix        = "verif-"
+  security_groups    = module.lb_microservices_sg.security_group_id
+  tags               = local.final_tags
 }
 
 module "alb_visualizer" {

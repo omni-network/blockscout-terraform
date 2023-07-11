@@ -46,6 +46,9 @@ variable "tags" {
 variable "target_group_arns" {
   type = list(any)
 }
+variable "block_devices" {
+  type = list(any)
+}
 variable "docker_compose_file_postfix" {
   type    = string
   default = ""
