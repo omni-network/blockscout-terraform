@@ -43,18 +43,8 @@ module "ec2_asg" {
       user                      = var.user
     }
   ))
-  block_device_mappings = [
-    {
-      device_name = "/dev/xvda"
-      no_device   = 0
-      ebs = {
-        delete_on_termination = true
-        encrypted             = false
-        volume_size           = 30
-        volume_type           = "gp2"
-      }
-    }
-  ]
+  block_device_mappings = var.block_devices
+
   network_interfaces = [
     {
       delete_on_termination = true

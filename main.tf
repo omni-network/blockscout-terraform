@@ -30,6 +30,18 @@ module "obs_staging_vpc" {
     project           = "omni-staging-blockscout"
     terraform_managed = true
   }
+  block_devices = [
+    {
+      device_name = "/dev/sda1"
+      no_device   = 0
+      ebs = {
+        delete_on_termination = true
+        encrypted             = false
+        volume_size           = 30
+        volume_type           = "gp2"
+      }
+    }
+  ]
 }
 
 module "obs_testnet_vpc" {
@@ -50,24 +62,36 @@ module "obs_testnet_vpc" {
     project           = "omni-testnet-blockscout"
     terraform_managed = true
   }
+  block_devices = [
+    {
+      device_name = "/dev/sda1"
+      no_device   = 0
+      ebs = {
+        delete_on_termination = true
+        encrypted             = false
+        volume_size           = 30
+        volume_type           = "gp2"
+      }
+    }
+  ]
 }
 
 resource "cloudflare_record" "staging_cname" {
-  zone_id = var.cloudflare_zone_id
-  name    = "staging.explorer"
-  type    = "CNAME"
-  proxied = false
-  count   = var.deploy_staging_blockscout ? 1 : 0
-  value = var.deploy_staging_blockscout ? module.obs_staging_vpc[0].blockscout_url : null
+  zone_id         = var.cloudflare_zone_id
+  name            = "staging.explorer"
+  type            = "CNAME"
+  proxied         = false
+  count           = var.deploy_staging_blockscout ? 1 : 0
+  value           = var.deploy_staging_blockscout ? module.obs_staging_vpc[0].blockscout_url : null
   allow_overwrite = true
 }
 
 resource "cloudflare_record" "testnet_cname" {
-  zone_id = var.cloudflare_zone_id
-  name    = "testnet-1.explorer"
-  type    = "CNAME"
-  proxied = false
-  value = module.obs_testnet_vpc.blockscout_url
+  zone_id         = var.cloudflare_zone_id
+  name            = "testnet-1.explorer"
+  type            = "CNAME"
+  proxied         = false
+  value           = module.obs_testnet_vpc.blockscout_url
   allow_overwrite = true
 }
 

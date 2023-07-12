@@ -118,6 +118,13 @@ variable "existed_private_subnets_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "block_devices" {
+  description = "List of block devices to be used for the instance"
+  type        = list(any)
+  default     = []
+}
+
 variable "existed_public_subnets_ids" {
   description = "List of existed if public subnets(For LB)"
   type        = list(string)
