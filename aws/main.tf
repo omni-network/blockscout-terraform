@@ -160,7 +160,7 @@ module "rds" {
   version                             = "5.1.1"
   count                               = var.deploy_rds_db ? 1 : 0
   engine                              = "postgres"
-  engine_version                      = "13.7"
+  engine_version                      = "13.10"
   family                              = "postgres13"
   major_engine_version                = "13"
   instance_class                      = var.rds_instance_type
