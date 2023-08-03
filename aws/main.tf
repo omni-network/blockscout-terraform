@@ -450,6 +450,74 @@ module "ec2_asg_eth_bytecode_db" {
   tags = local.final_tags
 }
 
+module "ec2_asg_xchain_indexer" {
+  source        = "./asg"
+  block_devices = var.block_devices
+  count = var.xchain_settings["enabled"] ? 1 : 0
+  ## ASG settings
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-xchain-indexer-instance"
+  min_size             = 1
+  max_size             = 1
+  vpc_zone_identifier  = var.existed_vpc_id != "" ? slice(var.existed_private_subnets_ids, 0, 1) : slice(module.vpc[0].private_subnets, 0, 1)
+  launch_template_name = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-indexer-launch-template"
+  target_group_arns    = []
+  ## Instance settings
+  image_id                    = data.aws_ami.ubuntu.id
+  instance_type               = var.indexer_instance_type
+  create_iam_instance_profile = var.create_iam_instance_profile_ssm_policy
+  iam_instance_profile_arn    = var.iam_instance_profile_arn
+  iam_role_name               = "role-${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-api"
+  ## Init settings
+  docker_compose_file_postfix = "_xchain"
+  path_docker_compose_files = var.path_docker_compose_files
+  user                      = var.user
+  security_groups           = module.application_sg.security_group_id
+  docker_compose_config = {
+    postgres_password             = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
+    postgres_user                 = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
+    xchain_docker_image           = var.xchain_settings["docker_image"]
+    xchain_config                 = var.xchain_settings["config"]
+    postgres_host                 = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
+    api                           = false
+    indexer                       = true
+  }
+  tags = local.final_tags
+}
+
+module "ec2_asg_xchain_api" {
+  source        = "./asg"
+  count = var.xchain_settings["enabled"] ? 1 : 0
+  block_devices = var.block_devices
+  ## ASG settings
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-xchain-api-instances"
+  min_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
+  max_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
+  vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
+  launch_template_name = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-api-launch-template"
+  target_group_arns    = module.alb_xchain[0].target_group_arns
+  ## Instance settings
+  image_id                    = data.aws_ami.ubuntu.id
+  instance_type               = var.ui_and_api_instance_type
+  create_iam_instance_profile = var.create_iam_instance_profile_ssm_policy
+  iam_instance_profile_arn    = var.iam_instance_profile_arn
+  iam_role_name               = "role-${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-api"
+  ## Init settings
+  docker_compose_file_postfix = "_xchain"
+  path_docker_compose_files = var.path_docker_compose_files
+  user                      = var.user
+  security_groups           = module.application_sg.security_group_id
+  docker_compose_config = {
+    postgres_password             = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
+    postgres_user                 = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
+    xchain_docker_image           = var.xchain_settings["docker_image"]
+    xchain_config                 = var.xchain_settings["config"]
+    postgres_host                 = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
+    api                           = true
+    indexer                       = false
+  }
+  tags = local.final_tags
+}
+
 module "alb" {
   source              = "./alb"
   name                = "${var.vpc_name != "" ? var.vpc_name : ""}-blockscout"
@@ -534,4 +602,19 @@ module "alb_eth_bytecode_db" {
   name_prefix       = "byte-"
   security_groups   = module.lb_microservices_sg.security_group_id
   tags              = local.final_tags
+}
+
+module "alb_xchain" {
+  count               = var.xchain_settings["enabled"] ? 1 : 0
+  source              = "./alb"
+  name                = "${var.vpc_name != "" ? var.vpc_name : ""}-xchain"
+  internal            = false
+  vpc_id              = local.vpc_id_rule
+  subnets             = local.subnets_rule
+  backend_port        = 4000
+  health_check_path   = "/healthz"
+  name_prefix         = "xchan-"
+  security_groups     = module.lb_sg.security_group_id
+  ssl_certificate_arn = var.ssl_certificate_arn
+  tags                = local.final_tags
 }

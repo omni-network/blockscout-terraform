@@ -141,6 +141,16 @@ variable "single_nat_gateway" {
   default     = true
 }
 
+# XChain Indexer Settings
+variable "xchain_settings" {
+  description = "Settings of verifier"
+  type = object({
+    enabled                     = optional(bool, false) 
+    docker_image                = optional(string, "omniops/xchain-indexer:latest")
+    config                      = optional(string, "staging")
+  })
+  default = {}
+}
 
 ## Blockscout settings
 variable "blockscout_settings" {
