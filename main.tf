@@ -98,7 +98,7 @@ resource "cloudflare_record" "staging_cname" {
 
 resource "cloudflare_record" "staging_xchain_cname" {
   zone_id         = var.cloudflare_zone_id
-  name            = "staging-xchain.explorer"
+  name            = "staging-xapi.explorer"
   type            = "CNAME"
   proxied         = false
   count           = var.deploy_staging_blockscout ? 1 : 0

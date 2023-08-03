@@ -453,7 +453,7 @@ module "ec2_asg_eth_bytecode_db" {
 module "ec2_asg_xchain_indexer" {
   source        = "./asg"
   block_devices = var.block_devices
-  count = var.xchain_settings["enabled"] ? 1 : 0
+  count         = var.xchain_settings["enabled"] ? 1 : 0
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-xchain-indexer-instance"
   min_size             = 1
@@ -469,24 +469,24 @@ module "ec2_asg_xchain_indexer" {
   iam_role_name               = "role-${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-api"
   ## Init settings
   docker_compose_file_postfix = "_xchain"
-  path_docker_compose_files = var.path_docker_compose_files
-  user                      = var.user
-  security_groups           = module.application_sg.security_group_id
+  path_docker_compose_files   = var.path_docker_compose_files
+  user                        = var.user
+  security_groups             = module.application_sg.security_group_id
   docker_compose_config = {
-    postgres_password             = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
-    postgres_user                 = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
-    xchain_docker_image           = var.xchain_settings["docker_image"]
-    xchain_config                 = var.xchain_settings["config"]
-    postgres_host                 = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
-    api                           = false
-    indexer                       = true
+    postgres_password   = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
+    postgres_user       = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
+    xchain_docker_image = var.xchain_settings["docker_image"]
+    xchain_config       = var.xchain_settings["config"]
+    postgres_host       = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
+    api                 = false
+    indexer             = true
   }
   tags = local.final_tags
 }
 
 module "ec2_asg_xchain_api" {
   source        = "./asg"
-  count = var.xchain_settings["enabled"] ? 1 : 0
+  count         = var.xchain_settings["enabled"] ? 1 : 0
   block_devices = var.block_devices
   ## ASG settings
   name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-xchain-api-instances"
@@ -503,17 +503,17 @@ module "ec2_asg_xchain_api" {
   iam_role_name               = "role-${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-api"
   ## Init settings
   docker_compose_file_postfix = "_xchain"
-  path_docker_compose_files = var.path_docker_compose_files
-  user                      = var.user
-  security_groups           = module.application_sg.security_group_id
+  path_docker_compose_files   = var.path_docker_compose_files
+  user                        = var.user
+  security_groups             = module.application_sg.security_group_id
   docker_compose_config = {
-    postgres_password             = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
-    postgres_user                 = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
-    xchain_docker_image           = var.xchain_settings["docker_image"]
-    xchain_config                 = var.xchain_settings["config"]
-    postgres_host                 = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
-    api                           = true
-    indexer                       = false
+    postgres_password   = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
+    postgres_user       = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
+    xchain_docker_image = var.xchain_settings["docker_image"]
+    xchain_config       = var.xchain_settings["config"]
+    postgres_host       = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
+    api                 = true
+    indexer             = false
   }
   tags = local.final_tags
 }
@@ -613,7 +613,7 @@ module "alb_xchain" {
   subnets             = local.subnets_rule
   backend_port        = 4000
   health_check_path   = "/healthz"
-  name_prefix         = "xchan-"
+  name_prefix         = "xchn-"
   security_groups     = module.lb_sg.security_group_id
   ssl_certificate_arn = var.ssl_certificate_arn
   tags                = local.final_tags
