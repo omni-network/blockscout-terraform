@@ -20,8 +20,13 @@ module "obs_staging_vpc" {
   create_iam_instance_profile_ssm_policy = "true"
   deploy_ec2_instance_db                 = false
   deploy_rds_db                          = true
+  xchain_settings = {
+    enabled      = true
+    docker_image = "omniops/xchain-indexer:latest"
+    config       = "staging"
+  }
   blockscout_settings = {
-    blockscout_docker_image = local.blockscout_docker_image
+    blockscout_docker_image = "omniops/blockscout:xchain"
     rpc_address             = "http://staging.omni.network:8545"
     ws_address              = "ws://staging.omni.network:8546"
     chain_id                = "165"
@@ -52,6 +57,11 @@ module "obs_testnet_vpc" {
   create_iam_instance_profile_ssm_policy = "true"
   deploy_ec2_instance_db                 = false
   deploy_rds_db                          = true
+  xchain_settings = {
+    enabled      = false
+    docker_image = "omniops/xchain-indexer:latest"
+    config       = "staging"
+  }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_docker_image
     rpc_address             = "http://testnet-1-sentry-2.omni.network:8545"
@@ -83,6 +93,16 @@ resource "cloudflare_record" "staging_cname" {
   proxied         = false
   count           = var.deploy_staging_blockscout ? 1 : 0
   value           = var.deploy_staging_blockscout ? module.obs_staging_vpc[0].blockscout_url : null
+  allow_overwrite = true
+}
+
+resource "cloudflare_record" "staging_xchain_cname" {
+  zone_id         = var.cloudflare_zone_id
+  name            = "staging-xapi.explorer"
+  type            = "CNAME"
+  proxied         = false
+  count           = var.deploy_staging_blockscout ? 1 : 0
+  value           = var.deploy_staging_blockscout ? module.obs_staging_vpc[0].xchain_url : null
   allow_overwrite = true
 }
 
