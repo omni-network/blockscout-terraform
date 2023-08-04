@@ -1,5 +1,5 @@
 locals {
-  blockscout_docker_image = "omniops/blockscout:5.1.5-omnibeta.1"
+  blockscout_dev_docker_image = "omniops/blockscout:dev"
 }
 
 provider "aws" {
@@ -26,7 +26,7 @@ module "obs_staging_vpc" {
     config       = "staging"
   }
   blockscout_settings = {
-    blockscout_docker_image = blockscout_docker_image
+    blockscout_docker_image = local.blockscout_dev_docker_image
     rpc_address             = "http://staging.omni.network:8545"
     ws_address              = "ws://staging.omni.network:8546"
     chain_id                = "165"
