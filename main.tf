@@ -1,5 +1,5 @@
 locals {
-  blockscout_dev_docker_image = "omniops/blockscout:dev"
+  blockscout_dev_docker_image = "omniops/blockscout:latest"
 }
 
 provider "aws" {
@@ -58,14 +58,14 @@ module "obs_testnet_vpc" {
   deploy_ec2_instance_db                 = false
   deploy_rds_db                          = true
   xchain_settings = {
-    enabled      = false
+    enabled      = true
     docker_image = "omniops/xchain-indexer:latest"
-    config       = "staging"
+    config       = "testnet"
   }
   blockscout_settings = {
-    blockscout_docker_image = "omniops/blockscout:old"
-    rpc_address             = "http://testnet-1-sentry-2.omni.network:8545"
-    ws_address              = "ws://testnet-1-sentry-2.omni.network:8546"
+    blockscout_docker_image = local.blockscout_dev_docker_image
+    rpc_address             = "http://testnet-sentry-2.omni.network:8545"
+    ws_address              = "ws://testnet-sentry-2.omni.network:8546"
     chain_id                = "165"
   }
   tags = {
@@ -108,7 +108,7 @@ resource "cloudflare_record" "staging_xchain_cname" {
 
 resource "cloudflare_record" "testnet_cname" {
   zone_id         = var.cloudflare_zone_id
-  name            = "testnet-1.explorer"
+  name            = "testnet.explorer"
   type            = "CNAME"
   proxied         = false
   value           = module.obs_testnet_vpc.blockscout_url
