@@ -96,6 +96,15 @@ resource "cloudflare_record" "staging_cname" {
   allow_overwrite = true
 }
 
+resource "cloudflare_record" "testnet_cname" {
+  zone_id         = var.cloudflare_zone_id
+  name            = "testnet.explorer"
+  type            = "CNAME"
+  proxied         = false
+  value           = module.obs_testnet_vpc.blockscout_url
+  allow_overwrite = true
+}
+
 resource "cloudflare_record" "staging_xchain_cname" {
   zone_id         = var.cloudflare_zone_id
   name            = "staging-xapi.explorer"
@@ -106,21 +115,12 @@ resource "cloudflare_record" "staging_xchain_cname" {
   allow_overwrite = true
 }
 
-resource "cloudflare_record" "testnet_cname" {
-  zone_id         = var.cloudflare_zone_id
-  name            = "testnet.explorer"
-  type            = "CNAME"
-  proxied         = false
-  value           = module.obs_testnet_vpc.blockscout_url
-  allow_overwrite = true
-}
-
 resource "cloudflare_record" "testnet_xchain_cname" {
   zone_id         = var.cloudflare_zone_id
   name            = "testnet-xapi.explorer"
   type            = "CNAME"
   proxied         = false
-  value           = module.obs_testnet_vpc[0].xchain_url
+  value           = module.obs_testnet_vpc.xchain_url
   allow_overwrite = true
 }
 
