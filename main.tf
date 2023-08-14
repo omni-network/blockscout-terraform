@@ -115,6 +115,15 @@ resource "cloudflare_record" "testnet_cname" {
   allow_overwrite = true
 }
 
+resource "cloudflare_record" "testnet_xchain_cname" {
+  zone_id         = var.cloudflare_zone_id
+  name            = "testnet-xapi.explorer"
+  type            = "CNAME"
+  proxied         = false
+  value           = module.obs_testnet_vpc[0].xchain_url
+  allow_overwrite = true
+}
+
 output "staging_blockscout_url" {
   value = var.deploy_staging_blockscout ? module.obs_staging_vpc[0].blockscout_url : null
 }
