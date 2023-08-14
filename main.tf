@@ -64,8 +64,8 @@ module "obs_testnet_vpc" {
   }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_dev_docker_image
-    rpc_address             = "http://testnet-sentry-2.omni.network:8545"
-    ws_address              = "ws://testnet-sentry-2.omni.network:8546"
+    rpc_address             = "http://testnet-sentry-explorer.omni.network:8545"
+    ws_address              = "ws://testnet-sentry-explorer.omni.network:8546"
     chain_id                = "165"
   }
   tags = {
