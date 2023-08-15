@@ -18,3 +18,15 @@ variable "deploy_staging_blockscout" {
   type        = bool
   default     = true
 }
+
+variable "blockscout_docker_image" {
+  description = "The blockscout docker image."
+  type        = string
+  default     = "omniops/blockscout:latest"
+}
+
+variable "xchain_indexer_docker_image" {
+  description = "The xchain indexer docker image."
+  type        = string
+  default     = "omniops/xchain-indexer:latest"
+}
