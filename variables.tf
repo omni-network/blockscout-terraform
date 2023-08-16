@@ -19,6 +19,12 @@ variable "deploy_staging_blockscout" {
   default     = true
 }
 
+variable "deploy_testnet_blockscout" {
+  description = "Whether to deploy the testnet blockscout service."
+  type        = bool
+  default     = true
+}
+
 variable "blockscout_docker_image" {
   description = "The blockscout docker image."
   type        = string
