@@ -47,6 +47,7 @@ module "obs_staging_vpc" {
 
 module "obs_testnet_vpc" {
   source                                 = "./aws"
+  count                                  = var.deploy_testnet_blockscout ? 1 : 0
   vpc_name                               = "obs-testnet"
   vpc_cidr                               = "10.105.0.0/16"
   ssl_certificate_arn                    = var.ssl_certificate_arn
@@ -97,7 +98,8 @@ resource "cloudflare_record" "testnet_cname" {
   name            = "testnet.explorer"
   type            = "CNAME"
   proxied         = false
-  value           = module.obs_testnet_vpc.blockscout_url
+  count           = var.deploy_testnet_blockscout ? 1 : 0
+  value           = var.deploy_testnet_blockscout ? module.obs_testnet_vpc[0].blockscout_url : null
   allow_overwrite = true
 }
 
@@ -116,7 +118,8 @@ resource "cloudflare_record" "testnet_xchain_cname" {
   name            = "testnet-xapi.explorer"
   type            = "CNAME"
   proxied         = false
-  value           = module.obs_testnet_vpc.xchain_url
+  count           = var.deploy_testnet_blockscout ? 1 : 0
+  value           = var.deploy_testnet_blockscout ? module.obs_testnet_vpc[0].xchain_url : null
   allow_overwrite = true
 }
 
@@ -125,5 +128,5 @@ output "staging_blockscout_url" {
 }
 
 output "testnet_blockscout_url" {
-  value = module.obs_testnet_vpc.blockscout_url
+  value = var.deploy_testnet_blockscout ? module.obs_testnet_vpc[0].blockscout_url : null
 }
