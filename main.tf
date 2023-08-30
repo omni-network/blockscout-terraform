@@ -22,7 +22,7 @@ module "obs_staging_vpc" {
     config       = "staging"
   }
   blockscout_settings = {
-    blockscout_docker_image = var.blockscout_docker_image
+    blockscout_docker_image = vars.staging_blockscout_docker_image
     rpc_address             = "http://staging.omni.network:8545"
     ws_address              = "ws://staging.omni.network:8546"
     chain_id                = "165"
@@ -60,7 +60,7 @@ module "obs_testnet_vpc" {
     config       = "testnet"
   }
   blockscout_settings = {
-    blockscout_docker_image = var.blockscout_docker_image
+    blockscout_docker_image = var.testnet_blockscout_docker_image
     rpc_address             = "http://testnet-sentry-explorer.omni.network:8545"
     ws_address              = "ws://testnet-sentry-explorer.omni.network:8546"
     chain_id                = "165"
