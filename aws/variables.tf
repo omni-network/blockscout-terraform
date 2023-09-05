@@ -145,7 +145,7 @@ variable "single_nat_gateway" {
 variable "xchain_settings" {
   description = "Settings of verifier"
   type = object({
-    enabled                     = optional(bool, false) 
+    enabled                     = optional(bool, false)
     docker_image                = optional(string, "omniops/xchain-indexer:latest")
     config                      = optional(string, "staging")
   })
@@ -160,6 +160,7 @@ variable "blockscout_settings" {
     postgres_user                 = optional(string, "postgres")
     postgres_host                 = optional(string, "postgres")
     blockscout_docker_image       = optional(string, "blockscout/blockscout:latest")
+    docker_shell                  = optional(string, "bash")
     rpc_address                   = optional(string, "http://staging.omni.network:8545")
     chain_id                      = optional(string, "165")
     rust_verification_service_url = optional(string, "https://sc-verifier.aws-k8s.blockscout.com/")
