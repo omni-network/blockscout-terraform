@@ -25,8 +25,14 @@ variable "deploy_testnet_blockscout" {
   default     = true
 }
 
-variable "blockscout_docker_image" {
-  description = "The blockscout docker image."
+variable "staging_blockscout_docker_image" {
+  description = "The staging blockscout docker image."
+  type        = string
+  default     = "omniops/blockscout:latest"
+}
+
+variable "testnet_blockscout_docker_image" {
+  description = "The testnet blockscout docker image."
   type        = string
   default     = "omniops/blockscout:latest"
 }

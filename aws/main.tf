@@ -240,6 +240,7 @@ module "ec2_asg_indexer" {
     postgres_password             = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
     postgres_user                 = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
     blockscout_docker_image       = var.blockscout_settings["blockscout_docker_image"]
+    docker_shell                  = var.blockscout_settings["docker_shell"]
     rpc_address                   = var.blockscout_settings["rpc_address"]
     ws_address                    = var.blockscout_settings["ws_address"]
     postgres_host                 = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
@@ -280,6 +281,7 @@ module "ec2_asg_api_and_ui" {
     postgres_password             = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
     postgres_user                 = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
     blockscout_docker_image       = var.blockscout_settings["blockscout_docker_image"]
+    docker_shell                  = var.blockscout_settings["docker_shell"]
     rpc_address                   = var.blockscout_settings["rpc_address"]
     ws_address                    = var.blockscout_settings["ws_address"]
     postgres_host                 = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
