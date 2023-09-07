@@ -42,3 +42,9 @@ variable "xchain_indexer_docker_image" {
   type        = string
   default     = "omniops/xchain-indexer:latest"
 }
+
+variable "staging_xchain_indexer_omni_config_rpc_addr" {
+  description = "The rpc address used by the omni indexer on staging."
+  type        = string
+  default     = "http://staging.omni.network:8545"
+}

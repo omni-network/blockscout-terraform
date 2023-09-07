@@ -20,6 +20,9 @@ module "obs_staging_vpc" {
     enabled      = true
     docker_image = var.xchain_indexer_docker_image
     config       = "staging"
+    omni_config = {
+      rpc_addr = var.staging_xchain_indexer_omni_config_rpc_addr
+    }
   }
   blockscout_settings = {
     blockscout_docker_image = var.staging_blockscout_docker_image

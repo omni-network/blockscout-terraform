@@ -16,6 +16,7 @@ services:
             - /bin/indexer
             - index
             - --config-file=/config/${xchain_config}.json
+            - --omni-indexer-rpc-address=${omni_config_rpc_addr}
 %{ endif ~}
             image: omniops/xchain-indexer:latest
             restart: always
