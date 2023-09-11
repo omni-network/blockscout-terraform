@@ -479,7 +479,7 @@ module "ec2_asg_xchain_indexer" {
     postgres_user        = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
     xchain_docker_image  = var.xchain_settings["docker_image"]
     xchain_config        = var.xchain_settings["config"]
-    omni_rpc = var.xchain_settings["omni_config"]["rpc_addr"]
+    omni_rpc             = var.xchain_settings["omni_config"]["omni_rpc"]
     postgres_host        = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     api                  = false
     indexer              = true
@@ -514,6 +514,7 @@ module "ec2_asg_xchain_api" {
     postgres_user       = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
     xchain_docker_image = var.xchain_settings["docker_image"]
     xchain_config       = var.xchain_settings["config"]
+    omni_rpc             = var.xchain_settings["omni_config"]["omni_rpc"]
     postgres_host       = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     api                 = true
     indexer             = false
