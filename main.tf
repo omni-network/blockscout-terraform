@@ -6,6 +6,9 @@ provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
 
+locals {
+  omni_staging_rpc = "http://staging.omni.network:8545"
+}
 
 module "obs_staging_vpc" {
   source                                 = "./aws"
@@ -20,6 +23,9 @@ module "obs_staging_vpc" {
     enabled      = true
     docker_image = var.xchain_indexer_docker_image
     config       = "staging"
+    omni_config = {
+      rpc_addr = locals.omni_staging_rpc
+    }
   }
   blockscout_settings = {
     blockscout_docker_image = var.staging_blockscout_docker_image
