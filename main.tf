@@ -8,6 +8,7 @@ provider "cloudflare" {
 
 locals {
   omni_staging_rpc = "http://staging.omni.network:8545"
+  omni_testnet_rpc = "https://testnet.omni.network"
 }
 
 module "obs_staging_vpc" {
@@ -24,7 +25,7 @@ module "obs_staging_vpc" {
     docker_image = var.xchain_indexer_docker_image
     config       = "staging"
     omni_config = {
-      rpc_addr = locals.omni_staging_rpc
+      omni_rpc = local.omni_staging_rpc
     }
   }
   blockscout_settings = {
@@ -65,6 +66,9 @@ module "obs_testnet_vpc" {
     enabled      = true
     docker_image = var.xchain_indexer_docker_image
     config       = "testnet"
+    omni_config = {
+      omni_rpc = local.omni_testnet_rpc
+    }
   }
   blockscout_settings = {
     blockscout_docker_image = var.testnet_blockscout_docker_image
