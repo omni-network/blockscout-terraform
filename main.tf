@@ -8,6 +8,27 @@ provider "cloudflare" {
 
 locals {
   omni_staging_rpc = "http://staging.omni.network:8545"
+  external_chains_staging_config = {
+      "external_chains": [
+        {
+          "chain_name": "optimism-goerli",
+          "rpc_addr": "https://optimism-goerli.infura.io/v3/dc5009d7603b431799765f8de1dfff6c",
+          "default_start_block": -1,
+          "confirmation_block_count": 10,
+          "syncInterval": 30,
+          "portal_addr": "0x0100B6119B26A9dE68865E4f34ad2125bd83e9D1"
+        },
+        {
+          "chain_name": "arbitrum-goerli",
+          "rpc_addr": "https://arbitrum-goerli.infura.io/v3/dc5009d7603b431799765f8de1dfff6c",
+          "default_start_block": -1,
+          "confirmation_block_count": 10,
+          "syncInterval": 30,
+          "portal_addr": "0x0100B6119B26A9dE68865E4f34ad2125bd83e9D1"
+        }
+      ]
+  }
+  external_chains_testnet_config = {}
   omni_testnet_rpc = "https://testnet.omni.network"
 }
 
@@ -27,6 +48,7 @@ module "obs_staging_vpc" {
     omni_config = {
       omni_rpc = local.omni_staging_rpc
     }
+    extrenal_chains_config = local.external_chains_staging_config
   }
   blockscout_settings = {
     blockscout_docker_image = var.staging_blockscout_docker_image
@@ -68,7 +90,8 @@ module "obs_testnet_vpc" {
     config       = "testnet"
     omni_config = {
       omni_rpc = local.omni_testnet_rpc
-    }
+    },
+    extrenal_chains_config = local.external_chains_testnet_config
   }
   blockscout_settings = {
     blockscout_docker_image = var.testnet_blockscout_docker_image
