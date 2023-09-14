@@ -10,7 +10,7 @@ locals {
   omni_staging_rpc = "http://staging.omni.network:8545"
   xchain_indexer_staging_docker_image = "omniops/xchain-indexer:latest"
   blockscout_staging_docker_image = "omniops/blockscout:latest"
-  omni_testnet_rpc = "https://testnet.omni.network"
+  omni_testnet_rpc = "http://testnet-sentry-explorer.omni.network:8545"
   xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:master"
   blockscout_testnet_docker_image = "omniops/blockscout:master"
 }
@@ -34,7 +34,7 @@ module "obs_staging_vpc" {
   }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_staging_docker_image
-    rpc_address             = "http://staging.omni.network:8545"
+    rpc_address             = local.omni_staging_rpc
     ws_address              = "ws://staging.omni.network:8546"
     chain_id                = "165"
     docker_shell            = "sh"
@@ -76,7 +76,7 @@ module "obs_testnet_vpc" {
   }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_testnet_docker_image
-    rpc_address             = "http://testnet-sentry-explorer.omni.network:8545"
+    rpc_address             = local.omni_testnet_rpc
     ws_address              = "ws://testnet-sentry-explorer.omni.network:8546"
     chain_id                = "165"
     docker_shell            = "sh"
