@@ -8,7 +8,11 @@ provider "cloudflare" {
 
 locals {
   omni_staging_rpc = "http://staging.omni.network:8545"
+  xchain_indexer_staging_docker_image = "omniops/xchain-indexer:latest"
+  blockscout_staging_docker_image = "omniops/blockscout:latest"
   omni_testnet_rpc = "https://testnet.omni.network"
+  xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:master"
+  blockscout_testnet_docker_image = "omniops/blockscout:master"
 }
 
 module "obs_staging_vpc" {
@@ -22,14 +26,14 @@ module "obs_staging_vpc" {
   deploy_rds_db                          = true
   xchain_settings = {
     enabled      = true
-    docker_image = "omniops/xchain-indexer:latest"
+    docker_image = local.xchain_indexer_staging_docker_image
     config       = "staging"
     omni_config = {
       omni_rpc = local.omni_staging_rpc
     }
   }
   blockscout_settings = {
-    blockscout_docker_image = "omniops/blockscout:latest"
+    blockscout_docker_image = local.blockscout_staging_docker_image
     rpc_address             = "http://staging.omni.network:8545"
     ws_address              = "ws://staging.omni.network:8546"
     chain_id                = "165"
@@ -64,14 +68,14 @@ module "obs_testnet_vpc" {
   deploy_rds_db                          = true
   xchain_settings = {
     enabled      = true
-    docker_image = "omniops/xchain-indexer:master"
+    docker_image = local.xchain_indexer_testnet_docker_image
     config       = "testnet"
     omni_config = {
       omni_rpc = local.omni_testnet_rpc
     }
   }
   blockscout_settings = {
-    blockscout_docker_image = "omniops/blockscout:master"
+    blockscout_docker_image = local.blockscout_testnet_docker_image
     rpc_address             = "http://testnet-sentry-explorer.omni.network:8545"
     ws_address              = "ws://testnet-sentry-explorer.omni.network:8546"
     chain_id                = "165"
