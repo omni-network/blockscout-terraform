@@ -475,14 +475,14 @@ module "ec2_asg_xchain_indexer" {
   user                        = var.user
   security_groups             = module.application_sg.security_group_id
   docker_compose_config = {
-    postgres_password   = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
-    postgres_user       = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
-    xchain_docker_image = var.xchain_settings["docker_image"]
-    xchain_config       = var.xchain_settings["config"]
-    omni_rpc            = var.xchain_settings["omni_config"]["omni_rpc"]
-    postgres_host       = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
-    api                 = false
-    indexer             = true
+    postgres_password           = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
+    postgres_user               = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
+    xchain_indexer_docker_image = var.xchain_settings["docker_image"]
+    xchain_config               = var.xchain_settings["config"]
+    omni_rpc                    = var.xchain_settings["omni_config"]["omni_rpc"]
+    postgres_host               = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
+    api                         = false
+    indexer                     = true
   }
   tags = local.final_tags
 }
@@ -510,14 +510,14 @@ module "ec2_asg_xchain_api" {
   user                        = var.user
   security_groups             = module.application_sg.security_group_id
   docker_compose_config = {
-    postgres_password   = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
-    postgres_user       = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
-    xchain_docker_image = var.xchain_settings["docker_image"]
-    xchain_config       = var.xchain_settings["config"]
-    omni_rpc            = var.xchain_settings["omni_config"]["omni_rpc"]
-    postgres_host       = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
-    api                 = true
-    indexer             = false
+    postgres_password           = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
+    postgres_user               = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
+    xchain_indexer_docker_image = var.xchain_settings["docker_image"]
+    xchain_config               = var.xchain_settings["config"]
+    omni_rpc                    = var.xchain_settings["omni_config"]["omni_rpc"]
+    postgres_host               = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
+    api                         = true
+    indexer                     = false
   }
   tags = local.final_tags
 }

@@ -18,7 +18,7 @@ services:
             - --config-file=/config/${xchain_config}.json
             - --omni-rpc=${omni_rpc}
 %{ endif ~}
-            image: ${xchain_docker_image}
+            image: ${xchain_indexer_docker_image}
             restart: always
             environment:
                   DB_HOST: ${postgres_host}
