@@ -6,6 +6,11 @@ provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
 
+/* For each deployment of new docker images for xchain indexer and\or blockscout to any enviroment, 
+   make sure to use specific tag names in the vars given below (i.e "omniops/xchain-indexer:1.0.0") 
+  and to commit the change to the repo once the deployment has been executed. This is currently the only place
+  where we track which version of a docker image has been deployed to an enviroment.
+*/
 locals {
   omni_staging_rpc = "http://staging.omni.network:8545"
   xchain_indexer_staging_docker_image = "omniops/xchain-indexer:latest"
