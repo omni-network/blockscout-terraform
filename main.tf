@@ -6,9 +6,20 @@ provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
 
+/* For each deployment of new docker images for xchain indexer and\or blockscout to any enviroment, 
+   make sure to use specific tag names in the vars given below (i.e "omniops/xchain-indexer:1.0.0") 
+  and to commit the change to the repo once the deployment has been executed. This is currently the only place
+  where we track which version of a docker image has been deployed to an enviroment.
+*/
 locals {
   omni_staging_rpc = "http://staging.omni.network:8545"
-  omni_testnet_rpc = "https://testnet.omni.network"
+  omni_staging_ws = "ws://staging.omni.network:8546"
+  xchain_indexer_staging_docker_image = "omniops/xchain-indexer:latest"
+  blockscout_staging_docker_image = "omniops/blockscout:latest"
+  omni_testnet_rpc = "http://testnet-sentry-explorer.omni.network:8545"
+  omni_testnet_ws = "ws://testnet-sentry-explorer.omni.network:8546"
+  xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:master"
+  blockscout_testnet_docker_image = "omniops/blockscout:master"
 }
 
 module "obs_staging_vpc" {
@@ -22,16 +33,16 @@ module "obs_staging_vpc" {
   deploy_rds_db                          = true
   xchain_settings = {
     enabled      = true
-    docker_image = var.xchain_indexer_docker_image
+    docker_image = local.xchain_indexer_staging_docker_image
     config       = "staging"
     omni_config = {
       omni_rpc = local.omni_staging_rpc
     }
   }
   blockscout_settings = {
-    blockscout_docker_image = var.staging_blockscout_docker_image
-    rpc_address             = "http://staging.omni.network:8545"
-    ws_address              = "ws://staging.omni.network:8546"
+    blockscout_docker_image = local.blockscout_staging_docker_image
+    rpc_address             = local.omni_staging_rpc
+    ws_address              = local.omni_staging_ws
     chain_id                = "165"
     docker_shell            = "sh"
   }
@@ -64,16 +75,16 @@ module "obs_testnet_vpc" {
   deploy_rds_db                          = true
   xchain_settings = {
     enabled      = true
-    docker_image = var.xchain_indexer_docker_image
+    docker_image = local.xchain_indexer_testnet_docker_image
     config       = "testnet"
     omni_config = {
       omni_rpc = local.omni_testnet_rpc
     }
   }
   blockscout_settings = {
-    blockscout_docker_image = var.testnet_blockscout_docker_image
-    rpc_address             = "http://testnet-sentry-explorer.omni.network:8545"
-    ws_address              = "ws://testnet-sentry-explorer.omni.network:8546"
+    blockscout_docker_image = local.blockscout_testnet_docker_image
+    rpc_address             = local.omni_testnet_rpc
+    ws_address              = local.omni_testnet_ws
     chain_id                = "165"
     docker_shell            = "sh"
   }

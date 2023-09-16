@@ -24,21 +24,3 @@ variable "deploy_testnet_blockscout" {
   type        = bool
   default     = true
 }
-
-variable "staging_blockscout_docker_image" {
-  description = "The staging blockscout docker image."
-  type        = string
-  default     = "omniops/blockscout:latest"
-}
-
-variable "testnet_blockscout_docker_image" {
-  description = "The testnet blockscout docker image."
-  type        = string
-  default     = "omniops/blockscout:latest"
-}
-
-variable "xchain_indexer_docker_image" {
-  description = "The xchain indexer docker image."
-  type        = string
-  default     = "omniops/xchain-indexer:latest"
-}
