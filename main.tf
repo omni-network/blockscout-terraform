@@ -6,20 +6,20 @@ provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
 
-/* For each deployment of new docker images for xchain indexer and\or blockscout to any enviroment, 
-   make sure to use specific tag names in the vars given below (i.e "omniops/xchain-indexer:1.0.0") 
+/* For each deployment of new docker images for xchain indexer and\or blockscout to any enviroment,
+   make sure to use specific tag names in the vars given below (i.e "omniops/xchain-indexer:1.0.0")
   and to commit the change to the repo once the deployment has been executed. This is currently the only place
   where we track which version of a docker image has been deployed to an enviroment.
 */
 locals {
   omni_staging_rpc = "http://staging.omni.network:8545"
   omni_staging_ws = "ws://staging.omni.network:8546"
-  xchain_indexer_staging_docker_image = "omniops/xchain-indexer:latest"
-  blockscout_staging_docker_image = "omniops/blockscout:latest"
+  xchain_indexer_staging_docker_image = "omniops/xchain-indexer:main"
+  blockscout_staging_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
   omni_testnet_rpc = "http://testnet-sentry-explorer.omni.network:8545"
   omni_testnet_ws = "ws://testnet-sentry-explorer.omni.network:8546"
-  xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:master"
-  blockscout_testnet_docker_image = "omniops/blockscout:master"
+  xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:latest"
+  blockscout_testnet_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
 }
 
 module "obs_staging_vpc" {
