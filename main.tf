@@ -14,6 +14,16 @@ provider "cloudflare" {
 locals {
   omni_staging_rpc = "http://staging.omni.network:8545"
   omni_staging_ws = "ws://staging.omni.network:8546"
+  external_chains_staging = [
+    {
+      chain_name = "testchainname",
+      rpc_addr = "testrpcaddress",
+      default_start_block = 0,
+      confirmation_block_count = 0,
+      syncInterval = 10
+      portal_addr = "testportaladdress"
+    }
+  ]
   xchain_indexer_staging_docker_image = "omniops/xchain-indexer:main"
   blockscout_staging_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
   omni_testnet_rpc = "http://testnet-sentry-explorer.omni.network:8545"
@@ -34,7 +44,15 @@ module "obs_staging_vpc" {
   xchain_settings = {
     enabled      = true
     docker_image = local.xchain_indexer_staging_docker_image
-    config       = "staging"
+    config       = "config"
+    json_config = jsonencode({
+      omni_config = {
+        rpc_addr = local.omni_staging_rpc
+      }
+      external_chains = [
+        for x_chain in local.external_chains_staging : x_chain
+      ]
+    })
     omni_config = {
       omni_rpc = local.omni_staging_rpc
     }
@@ -77,7 +95,8 @@ module "obs_testnet_vpc" {
     enabled      = true
     docker_image = local.xchain_indexer_testnet_docker_image
     config       = "testnet"
-    omni_config = {
+    json_config  = "TODO"
+    omni_config  = {
       omni_rpc = local.omni_testnet_rpc
     }
   }

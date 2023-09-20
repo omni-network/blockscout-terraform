@@ -31,6 +31,10 @@ variable "iam_role_name" {
 variable "docker_compose_config" {
   type = any
 }
+variable "indexer_json_config" {
+  type = string
+  default = ""
+}
 variable "path_docker_compose_files" {
   type = string
 }

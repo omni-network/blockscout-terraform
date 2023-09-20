@@ -17,6 +17,10 @@ mkdir -p $DEST
 cat > $DEST/docker-compose.yml <<-TEMPLATE
 ${docker_compose_str}
 TEMPLATE
+mkdir -p config
+cat > /config/config.json <<-TEMPLATE
+${indexer_json_config}
+TEMPLATE
 cat > /etc/systemd/system/docker_compose_service.service <<-TEMPLATE
 [Unit]
 Description=Service for starting docker-compose for blockscout
