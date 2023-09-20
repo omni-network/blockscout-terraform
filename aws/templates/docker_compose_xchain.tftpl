@@ -18,7 +18,7 @@ services:
             - --config-file=/config/${xchain_config}.json
             - --omni-rpc=${omni_rpc}
             volumes:
-            - /config/config.json:/config/${xchain_config}.json
+            - /config/config.json:/config/config.json
 %{ endif ~}
             image: ${xchain_indexer_docker_image}
             restart: always
