@@ -148,7 +148,7 @@ variable "xchain_settings" {
     enabled                     = optional(bool, false)
     docker_image                = optional(string, "omniops/xchain-indexer:latest")
     config_file_name            = optional(string, "staging")
-    json_config                 = optional(string, "")
+    config_file_content         = optional(string, "")
     omni_config                 = optional(object({ omni_rpc=string }), { omni_rpc="http://staging.omni.network:8545" })
   })
   default = {}

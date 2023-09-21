@@ -31,7 +31,7 @@ variable "iam_role_name" {
 variable "docker_compose_config" {
   type = any
 }
-variable "indexer_json_config" {
+variable "xchain_config_file_content" {
   type = string
   default = ""
 }

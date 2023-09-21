@@ -210,9 +210,9 @@ module "ec2_database" {
           postgres_user     = var.blockscout_settings["postgres_user"]
         }
       ),
-      indexer_json_config       = "TODO: not needed here, maybe the var can be marked as optional? in the template or a separate template introduced"
-      path_docker_compose_files = var.path_docker_compose_files
-      user                      = var.user
+      xchain_config_file_content = "TODO: not needed here, maybe the var can be marked as optional? in the template or a separate template introduced"
+      path_docker_compose_files  = var.path_docker_compose_files
+      user                       = var.user
     }
   )
 }
@@ -485,7 +485,7 @@ module "ec2_asg_xchain_indexer" {
     api                         = false
     indexer                     = true
   }
-  indexer_json_config = var.xchain_settings["json_config"]
+  xchain_config_file_content  = var.xchain_settings["config_file_content"]
   tags = local.final_tags
 }
 
