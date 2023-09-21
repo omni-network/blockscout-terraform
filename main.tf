@@ -40,8 +40,49 @@ locals {
   ]
   xchain_indexer_staging_docker_image = "omniops/xchain-indexer:main"
   blockscout_staging_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
-  omni_testnet_rpc = "http://testnet-sentry-explorer.omni.network:8545"
+
   omni_testnet_ws = "ws://testnet-sentry-explorer.omni.network:8546"
+  omni_chain_config_testnet = {
+    rpc_addr = "http://testnet-sentry-explorer.omni.network:8545"
+    default_start_block = 0
+    confirmation_block_count = 0
+    syncInterval = 10
+    portal_addr = "0x1212400000000000000000000000000000000001"
+  }
+  external_chains_testnet = [
+    {
+      chain_name = "optimism-goerli"
+      rpc_addr = "https://optimism-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
+      default_start_block = -1
+      confirmation_block_count = 10
+      syncInterval = 30
+      portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
+    },
+    {
+      chain_name = "arbitrum-goerli"
+      rpc_addr = "https://arbitrum-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
+      default_start_block = -1
+      confirmation_block_count = 10
+      syncInterval = 30
+      portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
+    },
+    {
+      chain_name = "linea-goerli"
+      rpc_addr = "https://linea-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
+      default_start_block = -1
+      confirmation_block_count = 10
+      syncInterval = 30
+      portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
+    },
+    {
+      chain_name = "scroll-sepolia"
+      rpc_addr = "http://archive-node.sepolia.scroll.xyz:8545"
+      default_start_block = -1
+      confirmation_block_count = 10
+      syncInterval = 30
+      portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
+    }
+  ]
   xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:latest"
   blockscout_testnet_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
 }
@@ -65,7 +106,6 @@ module "obs_staging_vpc" {
         for x_chain in local.external_chains_staging : x_chain
       ]
     })
-    # TODO: To be removed as soon as mounting config approach is tested on staging 
     omni_config      = {
       omni_rpc = local.omni_chain_config_staging.rpc_addr
     }
@@ -108,15 +148,19 @@ module "obs_testnet_vpc" {
     enabled             = true
     docker_image        = local.xchain_indexer_testnet_docker_image
     config_file_name    = "testnet"
-    config_file_content = "TODO: apply staging approach as soon as it is tested"
-    # TODO: To be removed as soon as mounting config approach is tested on staging 
+    config_file_content = jsonencode({
+      omni_config = local.omni_chain_config_testnet,
+      external_chains = [
+        for x_chain in local.external_chains_testnet : x_chain
+      ]
+    })
     omni_config      = {
-      omni_rpc = local.omni_testnet_rpc
+      omni_rpc = local.omni_chain_config_testnet.rpc_addr
     }
   }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_testnet_docker_image
-    rpc_address             = local.omni_testnet_rpc
+    rpc_address             = local.omni_chain_config_testnet.rpc_addr
     ws_address              = local.omni_testnet_ws
     chain_id                = "165"
     docker_shell            = "sh"
