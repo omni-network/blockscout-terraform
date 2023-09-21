@@ -42,10 +42,10 @@ module "obs_staging_vpc" {
   deploy_ec2_instance_db                 = false
   deploy_rds_db                          = true
   xchain_settings = {
-    enabled      = true
-    docker_image = local.xchain_indexer_staging_docker_image
-    config       = "config"
-    json_config = jsonencode({
+    enabled          = true
+    docker_image     = local.xchain_indexer_staging_docker_image
+    config_file_name = "config"
+    json_config      = jsonencode({
       omni_config = {
         rpc_addr = local.omni_staging_rpc
       }
@@ -53,7 +53,7 @@ module "obs_staging_vpc" {
         for x_chain in local.external_chains_staging : x_chain
       ]
     })
-    omni_config = {
+    omni_config      = {
       omni_rpc = local.omni_staging_rpc
     }
   }
@@ -92,11 +92,11 @@ module "obs_testnet_vpc" {
   deploy_ec2_instance_db                 = false
   deploy_rds_db                          = true
   xchain_settings = {
-    enabled      = true
-    docker_image = local.xchain_indexer_testnet_docker_image
-    config       = "testnet"
-    json_config  = "TODO"
-    omni_config  = {
+    enabled          = true
+    docker_image     = local.xchain_indexer_testnet_docker_image
+    config_file_name = "testnet"
+    json_config      = "TODO"
+    omni_config      = {
       omni_rpc = local.omni_testnet_rpc
     }
   }
