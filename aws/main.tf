@@ -210,7 +210,7 @@ module "ec2_database" {
           postgres_user     = var.blockscout_settings["postgres_user"]
         }
       ),
-      xchain_config_file_content = "TODO: not needed here, maybe the var can be marked as optional? in the template or a separate template introduced"
+      xchain_config_file_content = ""
       path_docker_compose_files  = var.path_docker_compose_files
       user                       = var.user
     }
