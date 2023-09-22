@@ -209,9 +209,10 @@ module "ec2_database" {
           postgres_password = var.blockscout_settings["postgres_password"]
           postgres_user     = var.blockscout_settings["postgres_user"]
         }
-      )
-      path_docker_compose_files = var.path_docker_compose_files
-      user                      = var.user
+      ),
+      xchain_config_file_content = ""
+      path_docker_compose_files  = var.path_docker_compose_files
+      user                       = var.user
     }
   )
 }
@@ -478,12 +479,13 @@ module "ec2_asg_xchain_indexer" {
     postgres_password           = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
     postgres_user               = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
     xchain_indexer_docker_image = var.xchain_settings["docker_image"]
-    xchain_config               = var.xchain_settings["config"]
+    xchain_config_file_name     = var.xchain_settings["config_file_name"]
     omni_rpc                    = var.xchain_settings["omni_config"]["omni_rpc"]
     postgres_host               = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     api                         = false
     indexer                     = true
   }
+  xchain_config_file_content  = var.xchain_settings["config_file_content"]
   tags = local.final_tags
 }
 
@@ -513,7 +515,7 @@ module "ec2_asg_xchain_api" {
     postgres_password           = var.deploy_rds_db ? module.rds[0].db_instance_password : var.blockscout_settings["postgres_password"]
     postgres_user               = var.deploy_rds_db ? module.rds[0].db_instance_username : var.blockscout_settings["postgres_user"]
     xchain_indexer_docker_image = var.xchain_settings["docker_image"]
-    xchain_config               = var.xchain_settings["config"]
+    xchain_config_file_name     = var.xchain_settings["config_file_name"]
     omni_rpc                    = var.xchain_settings["omni_config"]["omni_rpc"]
     postgres_host               = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     api                         = true
