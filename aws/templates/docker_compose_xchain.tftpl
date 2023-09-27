@@ -17,8 +17,6 @@ services:
             - index
             - --config-file=/config/${xchain_config_file_name}.json
             - --omni-rpc=${omni_rpc}
-            volumes:
-            - /config/config.json:/config/config.json
 %{ endif ~}
             image: ${xchain_indexer_docker_image}
             restart: always
@@ -28,5 +26,7 @@ services:
                   DB_NAME: blockscout
                   DB_USER: ${postgres_user}
                   DB_PASSWORD: ${postgres_password}
+            volumes:
+            - /config/config.json:/config/config.json
             ports:
             - 4000:4000
