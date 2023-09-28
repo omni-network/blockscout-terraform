@@ -6,7 +6,6 @@ services:
             entrypoint:
             - /bin/indexer
             - api
-            - --config-file=/config/${xchain_config_file_name}.json
             - --port=4000
 %{ endif ~}
 %{ if indexer ~}
@@ -15,8 +14,6 @@ services:
             entrypoint:
             - /bin/indexer
             - index
-            - --config-file=/config/${xchain_config_file_name}.json
-            - --omni-rpc=${omni_rpc}
 %{ endif ~}
             image: ${xchain_indexer_docker_image}
             restart: always
