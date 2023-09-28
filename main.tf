@@ -17,8 +17,8 @@ locals {
     rpc_addr = "http://staging.omni.network:8545"
     default_start_block = 0
     confirmation_block_count = 0
-    syncInterval = 10
-    portal_addr = "0x1212400000000000000000000000000000000001"
+    sync_interval = 10
+    omni_predeploy_addr = "0x1212400000000000000000000000000000000001"
   }
   external_chains_staging = [
     {
@@ -26,7 +26,7 @@ locals {
       rpc_addr = "http://staging.omni.network:6545"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
     },
     {
@@ -34,7 +34,7 @@ locals {
       rpc_addr = "http://staging.omni.network:7545"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
     }
   ]
@@ -46,8 +46,8 @@ locals {
     rpc_addr = "http://testnet-sentry-explorer.omni.network:8545"
     default_start_block = 0
     confirmation_block_count = 0
-    syncInterval = 10
-    portal_addr = "0x1212400000000000000000000000000000000001"
+    sync_interval = 10
+    omni_predeploy_addr = "0x1212400000000000000000000000000000000001"
   }
   external_chains_testnet = [
     {
@@ -55,7 +55,7 @@ locals {
       rpc_addr = "https://optimism-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
@@ -63,7 +63,7 @@ locals {
       rpc_addr = "https://arbitrum-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
@@ -71,7 +71,7 @@ locals {
       rpc_addr = "https://linea-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
@@ -79,7 +79,7 @@ locals {
       rpc_addr = "http://archive-node.sepolia.scroll.xyz:8545"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     }
   ]
