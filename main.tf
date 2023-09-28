@@ -99,16 +99,12 @@ module "obs_staging_vpc" {
   xchain_settings = {
     enabled             = true
     docker_image        = local.xchain_indexer_staging_docker_image
-    config_file_name    = "config"
     config_file_content = jsonencode({
       omni_config = local.omni_chain_config_staging,
       external_chains = [
         for x_chain in local.external_chains_staging : x_chain
       ]
     })
-    omni_config      = {
-      omni_rpc = local.omni_chain_config_staging.rpc_addr
-    }
   }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_staging_docker_image
@@ -147,16 +143,12 @@ module "obs_testnet_vpc" {
   xchain_settings = {
     enabled             = true
     docker_image        = local.xchain_indexer_testnet_docker_image
-    config_file_name    = "testnet"
     config_file_content = jsonencode({
       omni_config = local.omni_chain_config_testnet,
       external_chains = [
         for x_chain in local.external_chains_testnet : x_chain
       ]
     })
-    omni_config      = {
-      omni_rpc = local.omni_chain_config_testnet.rpc_addr
-    }
   }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_testnet_docker_image
