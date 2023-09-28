@@ -521,6 +521,7 @@ module "ec2_asg_xchain_api" {
     api                         = true
     indexer                     = false
   }
+  xchain_config_file_content  = var.xchain_settings["config_file_content"]
   tags = local.final_tags
 }
 
