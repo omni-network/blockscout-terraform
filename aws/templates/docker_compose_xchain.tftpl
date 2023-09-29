@@ -6,7 +6,7 @@ services:
             entrypoint:
             - /bin/indexer
             - api
-            - --config-file=/config/${xchain_config_file_name}.json
+            - --config-file=${xchain_config_file_path}
             - --port=4000
 %{ endif ~}
 %{ if indexer ~}
@@ -15,8 +15,7 @@ services:
             entrypoint:
             - /bin/indexer
             - index
-            - --config-file=/config/${xchain_config_file_name}.json
-            - --omni-rpc=${omni_rpc}
+            - --config-file=${xchain_config_file_path}
 %{ endif ~}
             image: ${xchain_indexer_docker_image}
             restart: always
@@ -27,6 +26,8 @@ services:
                   DB_USER: ${postgres_user}
                   DB_PASSWORD: ${postgres_password}
             volumes:
-            - /config/config.json:/config/config.json
+            - type: bind
+            source: /xchain_indexer_config_to_mount.json
+            target: ${xchain_config_file_path}
             ports:
             - 4000:4000

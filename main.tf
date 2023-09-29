@@ -17,8 +17,8 @@ locals {
     rpc_addr = "http://staging.omni.network:8545"
     default_start_block = 0
     confirmation_block_count = 0
-    syncInterval = 10
-    portal_addr = "0x1212400000000000000000000000000000000001"
+    sync_interval = 10
+    omni_predeploy_addr = "0x1212400000000000000000000000000000000001"
   }
   external_chains_staging = [
     {
@@ -26,7 +26,7 @@ locals {
       rpc_addr = "http://staging.omni.network:6545"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
     },
     {
@@ -34,7 +34,7 @@ locals {
       rpc_addr = "http://staging.omni.network:7545"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
     }
   ]
@@ -46,8 +46,8 @@ locals {
     rpc_addr = "http://testnet-sentry-explorer.omni.network:8545"
     default_start_block = 0
     confirmation_block_count = 0
-    syncInterval = 10
-    portal_addr = "0x1212400000000000000000000000000000000001"
+    sync_interval = 10
+    omni_predeploy_addr = "0x1212400000000000000000000000000000000001"
   }
   external_chains_testnet = [
     {
@@ -55,7 +55,7 @@ locals {
       rpc_addr = "https://optimism-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
@@ -63,7 +63,7 @@ locals {
       rpc_addr = "https://arbitrum-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
@@ -71,7 +71,7 @@ locals {
       rpc_addr = "https://linea-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
@@ -79,7 +79,7 @@ locals {
       rpc_addr = "http://archive-node.sepolia.scroll.xyz:8545"
       default_start_block = -1
       confirmation_block_count = 10
-      syncInterval = 30
+      sync_interval = 30
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     }
   ]
@@ -99,16 +99,13 @@ module "obs_staging_vpc" {
   xchain_settings = {
     enabled             = true
     docker_image        = local.xchain_indexer_staging_docker_image
-    config_file_name    = "config"
+    config_file_path    = "/config/config.json"
     config_file_content = jsonencode({
       omni_config = local.omni_chain_config_staging,
       external_chains = [
         for x_chain in local.external_chains_staging : x_chain
       ]
     })
-    omni_config      = {
-      omni_rpc = local.omni_chain_config_staging.rpc_addr
-    }
   }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_staging_docker_image
@@ -147,16 +144,13 @@ module "obs_testnet_vpc" {
   xchain_settings = {
     enabled             = true
     docker_image        = local.xchain_indexer_testnet_docker_image
-    config_file_name    = "testnet"
+    config_file_path    = "/config/config.json"
     config_file_content = jsonencode({
       omni_config = local.omni_chain_config_testnet,
       external_chains = [
         for x_chain in local.external_chains_testnet : x_chain
       ]
     })
-    omni_config      = {
-      omni_rpc = local.omni_chain_config_testnet.rpc_addr
-    }
   }
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_testnet_docker_image
