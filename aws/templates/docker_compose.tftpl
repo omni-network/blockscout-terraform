@@ -34,7 +34,7 @@ services:
       DISABLE_WRITE_API: "true"
 %{ endif ~}
       BLOCKSCOUT_PROTOCOL: "https"
-      BLOCKSCOUT_HOST: "testnet.explorer.omni.network/"
+      BLOCKSCOUT_HOST: '${blockscout_host}'
       BLOCKSCOUT_VERSION: v5.2.2
       ETHEREUM_JSONRPC_TRACE_URL: '${rpc_address}'
       ETHEREUM_JSONRPC_HTTP_URL: '${rpc_address}'

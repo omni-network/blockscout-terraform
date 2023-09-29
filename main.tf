@@ -116,6 +116,7 @@ module "obs_staging_vpc" {
     ws_address              = local.omni_staging_ws
     chain_id                = "165"
     docker_shell            = "sh"
+    blockscout_host         = "staging.explorer.omni.network"
   }
   tags = {
     project           = "omni-staging-blockscout"
@@ -164,6 +165,7 @@ module "obs_testnet_vpc" {
     ws_address              = local.omni_testnet_ws
     chain_id                = "165"
     docker_shell            = "sh"
+    blockscout_host         = "testnet.explorer.omni.network"
   }
   tags = {
     project           = "omni-testnet-blockscout"

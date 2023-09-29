@@ -169,6 +169,7 @@ variable "blockscout_settings" {
     ws_address                    = optional(string, "")
     visualize_sol2uml_service_url = optional(string, "")
     sig_provider_service_url      = optional(string, "")
+    blockscout_host               = optional(string, "testnet.explorer.omni.network")
   })
   default = {}
 }
