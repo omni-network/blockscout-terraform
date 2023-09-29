@@ -27,7 +27,7 @@ services:
                   DB_PASSWORD: ${postgres_password}
             volumes:
             - type: bind
-            source: /xchain-indexer-config-to-mount.json
+            source: /xchain_indexer_config_to_mount.json
             target: ${xchain_config_file_path}
             ports:
             - 4000:4000
