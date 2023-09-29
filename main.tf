@@ -99,6 +99,7 @@ module "obs_staging_vpc" {
   xchain_settings = {
     enabled             = true
     docker_image        = local.xchain_indexer_staging_docker_image
+    config_file_path    = "/config/config.json"
     config_file_content = jsonencode({
       omni_config = local.omni_chain_config_staging,
       external_chains = [
@@ -143,6 +144,7 @@ module "obs_testnet_vpc" {
   xchain_settings = {
     enabled             = true
     docker_image        = local.xchain_indexer_testnet_docker_image
+    config_file_path    = "/config/config.json"
     config_file_content = jsonencode({
       omni_config = local.omni_chain_config_testnet,
       external_chains = [

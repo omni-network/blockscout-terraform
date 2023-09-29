@@ -147,6 +147,7 @@ variable "xchain_settings" {
   type = object({
     enabled                     = optional(bool, false)
     docker_image                = optional(string, "omniops/xchain-indexer:latest")
+    config_file_path            = optional(string, "/config/config.json")
     config_file_content         = optional(string, "")
   })
   default = {}

@@ -17,8 +17,7 @@ mkdir -p $DEST
 cat > $DEST/docker-compose.yml <<-TEMPLATE
 ${docker_compose_str}
 TEMPLATE
-mkdir -p config
-cat > /config/config.json <<-TEMPLATE
+cat > /xchain-indexer-config-to-mount.json <<-TEMPLATE
 ${xchain_config_file_content}
 TEMPLATE
 cat > /etc/systemd/system/docker_compose_service.service <<-TEMPLATE
