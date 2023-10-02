@@ -38,7 +38,7 @@ locals {
       portal_addr = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
     }
   ]
-  xchain_indexer_staging_docker_image = "omniops/xchain-indexer:0.1.2"
+  xchain_indexer_staging_docker_image = "omniops/xchain-indexer:0.1.3"
   blockscout_staging_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
 
   omni_testnet_ws = "ws://testnet-sentry-explorer.omni.network:8546"
