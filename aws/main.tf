@@ -254,6 +254,7 @@ module "ec2_asg_indexer" {
     sig_provider_service_url      = var.sig_provider_enabled ? module.alb_sig_provider[0].lb_dns_name : var.blockscout_settings["sig_provider_service_url"]
     indexer                       = true
     api_and_ui                    = false
+    blockscout_host               = var.blockscout_settings["blockscout_host"]
   }
   tags = local.final_tags
 }
