@@ -83,7 +83,7 @@ locals {
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     }
   ]
-  xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:latest"
+  xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:0.1.3"
   blockscout_testnet_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
 }
 
