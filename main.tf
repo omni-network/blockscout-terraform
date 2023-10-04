@@ -41,9 +41,9 @@ locals {
   xchain_indexer_staging_docker_image = "omniops/xchain-indexer:0.1.3"
   blockscout_staging_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
 
-  omni_testnet_ws = "ws://testnet-sentry-explorer.omni.network:8546"
+  omni_testnet_ws = "ws://${var.testnet_sentry_node_url}:8546"
   omni_chain_config_testnet = {
-    rpc_addr = "http://testnet-sentry-explorer.omni.network:8545"
+    rpc_addr = "http://${var.testnet_sentry_node_url}:8545"
     default_start_block = 0
     confirmation_block_count = 0
     sync_interval = 10
@@ -52,7 +52,7 @@ locals {
   external_chains_testnet = [
     {
       chain_name = "optimism-goerli"
-      rpc_addr = "https://optimism-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
+      rpc_addr = "https://optimism-goerli.infura.io/v3/${var.infura_api_key}"
       default_start_block = -1
       confirmation_block_count = 10
       sync_interval = 30
@@ -60,7 +60,7 @@ locals {
     },
     {
       chain_name = "arbitrum-goerli"
-      rpc_addr = "https://arbitrum-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
+      rpc_addr = "https://arbitrum-goerli.infura.io/v3/${var.infura_api_key}"
       default_start_block = -1
       confirmation_block_count = 10
       sync_interval = 30
@@ -68,7 +68,7 @@ locals {
     },
     {
       chain_name = "linea-goerli"
-      rpc_addr = "https://linea-goerli.infura.io/v3/1e8b7c7931d24be095e34d0177c14854"
+      rpc_addr = "https://linea-goerli.infura.io/v3/${var.infura_api_key}"
       default_start_block = -1
       confirmation_block_count = 10
       sync_interval = 30
