@@ -244,6 +244,7 @@ module "ec2_asg_indexer" {
     docker_shell                  = var.blockscout_settings["docker_shell"]
     rpc_address                   = var.blockscout_settings["rpc_address"]
     ws_address                    = var.blockscout_settings["ws_address"]
+    omni_xchain_api               = var.blockscout_settings["omni_xchain_api"]
     postgres_host                 = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     chain_id                      = var.blockscout_settings["chain_id"]
     rust_verification_service_url = var.blockscout_settings["rust_verification_service_url"]
@@ -286,6 +287,7 @@ module "ec2_asg_api_and_ui" {
     docker_shell                  = var.blockscout_settings["docker_shell"]
     rpc_address                   = var.blockscout_settings["rpc_address"]
     ws_address                    = var.blockscout_settings["ws_address"]
+    omni_xchain_api               = var.blockscout_settings["omni_xchain_api"]
     postgres_host                 = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     chain_id                      = var.blockscout_settings["chain_id"]
     rust_verification_service_url = var.eth_bytecode_db_enabled ? module.alb_eth_bytecode_db[0].lb_dns_name : var.blockscout_settings["rust_verification_service_url"]
