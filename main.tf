@@ -38,8 +38,8 @@ locals {
       portal_addr = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
     }
   ]
-  xchain_indexer_staging_docker_image = "omniops/xchain-indexer:0.1.3"
-  blockscout_staging_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
+  xchain_indexer_staging_docker_image = "omniops/xchain-indexer:ad9b63f"
+  blockscout_staging_docker_image = "omniops/blockscout:0.1.1-beta.commit.8d313f20"
 
   omni_testnet_ws = "ws://${var.testnet_sentry_node_url}:8546"
   omni_chain_config_testnet = {
@@ -83,8 +83,11 @@ locals {
       portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     }
   ]
-  xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:0.1.3"
-  blockscout_testnet_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
+
+  # xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:0.1.3"
+  # blockscout_testnet_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
+  xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:ad9b63f"
+  blockscout_testnet_docker_image = "omniops/blockscout:0.1.1-beta.commit.8d313f20"
 }
 
 module "obs_staging_vpc" {
@@ -111,6 +114,7 @@ module "obs_staging_vpc" {
     blockscout_docker_image = local.blockscout_staging_docker_image
     rpc_address             = local.omni_chain_config_staging.rpc_addr
     ws_address              = local.omni_staging_ws
+    omni_xchain_api         = "https://staging-xapi.explorer.omni.network"
     chain_id                = "165"
     docker_shell            = "sh"
     blockscout_host         = "staging.explorer.omni.network"
@@ -157,6 +161,7 @@ module "obs_testnet_vpc" {
     blockscout_docker_image = local.blockscout_testnet_docker_image
     rpc_address             = local.omni_chain_config_testnet.rpc_addr
     ws_address              = local.omni_testnet_ws
+    omni_xchain_api         = "https://testnet-xapi.explorer.omni.network"
     chain_id                = "165"
     docker_shell            = "sh"
     blockscout_host         = "testnet.explorer.omni.network"

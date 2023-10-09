@@ -163,6 +163,7 @@ variable "blockscout_settings" {
     blockscout_docker_image       = optional(string, "blockscout/blockscout:latest")
     docker_shell                  = optional(string, "bash")
     rpc_address                   = optional(string, "http://staging.omni.network:8545")
+    omni_xchain_api               = optional(string, "https://staging-xapi.explorer.omni.network")
     chain_id                      = optional(string, "165")
     rust_verification_service_url = optional(string, "https://sc-verifier.aws-k8s.blockscout.com/")
     ws_address                    = optional(string, "")
