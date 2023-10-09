@@ -84,8 +84,7 @@ locals {
     }
   ]
 
-  # xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:0.1.3"
-  # blockscout_testnet_docker_image = "omniops/blockscout:0.1.0.commit.2404d446"
+  # TODO(kevin): udpate docker tags when stable release are available
   xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:ad9b63f"
   blockscout_testnet_docker_image = "omniops/blockscout:0.1.1-beta.commit.8d313f20"
 }
