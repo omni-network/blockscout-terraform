@@ -33,6 +33,7 @@ services:
       DISABLE_READ_API: "true"
       DISABLE_WRITE_API: "true"
 %{ endif ~}
+      CHAIN_SPEC_PATH: "https://raw.githubusercontent.com/omni-network/blockscout-terraform/omni/chain_spec/omni-predeploys.json"
       BLOCKSCOUT_PROTOCOL: "https"
       BLOCKSCOUT_HOST: '${blockscout_host}'
       BLOCKSCOUT_VERSION: v5.2.2
