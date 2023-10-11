@@ -35,6 +35,12 @@ variable "xchain_config_file_content" {
   type = string
   default = ""
 }
+variable "agent_secret_file_content" {
+  type = string
+}
+variable "agent_env" {
+  type = string
+}
 variable "path_docker_compose_files" {
   type = string
 }

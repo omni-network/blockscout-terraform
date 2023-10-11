@@ -153,6 +153,17 @@ variable "xchain_settings" {
   default = {}
 }
 
+# Grafana Agent
+variable "agent_secret_file_content" {
+  description = "Grafana Agent secrets file content"
+  type = string
+}
+
+variable "agent_env" {
+  description = "Grafana Agent env label"
+  type = string
+}
+
 ## Blockscout settings
 variable "blockscout_settings" {
   description = "Settings of blockscout app"
