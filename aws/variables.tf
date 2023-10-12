@@ -156,7 +156,8 @@ variable "xchain_settings" {
 # Grafana Agent
 variable "agent_secret_file_content" {
   description = "Grafana Agent secrets file content"
-  type = string
+  type        = string
+  sensitive   = true
 }
 
 variable "agent_env" {
