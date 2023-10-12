@@ -213,11 +213,11 @@ module "ec2_database" {
       path_docker_compose_files   = var.path_docker_compose_files
       user                        = var.user
       xchain_config_file_content  = ""
-      agent_secret_file_content   = ""
-      agent_env                   = ""
-      agent_hostname              = ""
-      deploy_agent_script         = ""
-      deploy_node_exporter_script = ""
+      agent_secret_file_content   = var.agent_secret_file_content
+      agent_env                   = var.agent_env
+      agent_hostname              = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-db-instance"
+      deploy_agent_script         = file("${path.module}/scripts/deploy_agent.sh")
+      deploy_node_exporter_script = file("${path.module}/scripts/deploy_node_exporter.sh")
     }
   )
 }
