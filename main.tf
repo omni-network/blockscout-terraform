@@ -92,7 +92,7 @@ locals {
     PROMETHEUS_URL=${var.prometheus_url}
     PROMETHEUS_USER=${var.prometheus_user}
     PROMETHEUS_PASSWORD=${var.prometheus_password}
-    LOKI_URL=${var.loki_url}
+    LOKI_HOST=${var.loki_host}
     LOKI_USER=${var.loki_user}
     LOKI_PASSWORD=${var.loki_password}
   EOF

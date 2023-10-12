@@ -24,8 +24,8 @@ apt-get install -y \
 
 # Create docker-compose file
 DEST="${path_docker_compose_files}"
-mkdir -p "${DEST}"
-cat > "${DEST}/docker-compose.yml" <<-EOF
+mkdir -p "$DEST"
+cat > "$DEST/docker-compose.yml" <<-EOF
 ${docker_compose_str}
 EOF
 
@@ -45,7 +45,7 @@ After=network.target
 [Service]
 Type=simple
 User=${user}
-ExecStart=/usr/bin/docker-compose -f ${DEST}/docker-compose.yml up
+ExecStart=/usr/bin/docker-compose -f $DEST/docker-compose.yml up
 Restart=on-failure
 
 [Install]
@@ -59,11 +59,11 @@ systemctl start docker_compose
 
 # Deploy prometheus node exporter
 SCRIPT=/tmp/deploy_node_exporter.sh
-cat > "${SCRIPT}" <<EOF
+cat > "$SCRIPT" <<EOF
 ${deploy_node_exporter_script}
 EOF
-chmod +x "${SCRIPT_PATH}"
-${SCRIPT}
+chmod +x "$SCRIPT"
+$SCRIPT
 
 # Deploy grafana agent
 cat > /etc/grafana-agent.secrets <<EOF
@@ -71,11 +71,11 @@ ${agent_secret_file_content}
 EOF
 
 SCRIPT=/tmp/deploy_agent.sh
-cat > "${SCRIPT}" <<EOF
+cat > "$SCRIPT" <<EOF
 ${deploy_agent_script}
 EOF
-chmod +x "${SCRIPT_PATH}"
+chmod +x "$SCRIPT"
 
 export ENV=${agent_env}
 export HOSTNAME=${agent_hostname}
-${SCRIPT}
+$SCRIPT

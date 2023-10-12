@@ -34,8 +34,8 @@ variable "prometheus_password" {
     sensitive   = true
 }
 
-variable "loki_url" {
-    description = "The Loki URL."
+variable "loki_host" {
+    description = "The Loki host."
     type        = string
     sensitive   = true
 }
