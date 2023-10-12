@@ -1,7 +1,7 @@
 SHELL=/bin/bash
 
 # Syncs the deploys scripts for grafana-agent and node-exporter from a local checkout of the private omni repo.
-# This should called every time those scripts chance to sync latest version to this repo.
+# This should called every time those scripts change to sync latest version to this repo.
 # This ensures single source of truth is the omni repo.
 OMNI_REPO = ../omni
 sync-deploy-scripts:
