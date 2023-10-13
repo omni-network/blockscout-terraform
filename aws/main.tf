@@ -188,7 +188,7 @@ module "ec2_database" {
   source                      = "terraform-aws-modules/ec2-instance/aws"
   version                     = "4.2.1"
   count                       = var.deploy_ec2_instance_db ? 1 : 0
-  name                        = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-db-instance"
+  name                        = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-db"
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.medium"
   monitoring                  = false
@@ -210,6 +210,7 @@ module "ec2_database" {
           postgres_user     = var.blockscout_settings["postgres_user"]
         }
       ),
+      docker_compose_systemd_unit = "omni-obs-db"
       path_docker_compose_files   = var.path_docker_compose_files
       user                        = var.user
       xchain_config_file_content  = ""
@@ -226,7 +227,7 @@ module "ec2_asg_indexer" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-indexer-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-indexer"
   min_size             = 1
   max_size             = 1
   vpc_zone_identifier  = var.existed_vpc_id != "" ? slice(var.existed_private_subnets_ids, 0, 1) : slice(module.vpc[0].private_subnets, 0, 1)
@@ -262,6 +263,7 @@ module "ec2_asg_indexer" {
     api_and_ui                    = false
     blockscout_host               = var.blockscout_settings["blockscout_host"]
   }
+  docker_compose_systemd_unit = "omni-obs-indexer"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -271,7 +273,7 @@ module "ec2_asg_api_and_ui" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-api-and-ui-instances"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-api-ui"
   min_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
   max_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -307,6 +309,7 @@ module "ec2_asg_api_and_ui" {
     api_and_ui                    = true
     blockscout_host               = var.blockscout_settings["blockscout_host"]
   }
+  docker_compose_systemd_unit = "omni-obs-api-ui"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -317,7 +320,7 @@ module "ec2_asg_verifier" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-verifier-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-verifier"
   min_size             = var.verifier_replicas
   max_size             = var.verifier_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -342,6 +345,7 @@ module "ec2_asg_verifier" {
     vyper_fetcher_list_url             = var.verifier_settings["vyper_fetcher_list_url"]
     sourcify_api_url                   = var.verifier_settings["sourcify_api_url"]
   }
+  docker_compose_systemd_unit = "omni-obs-verifier"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -352,7 +356,7 @@ module "ec2_asg_visualizer" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-visualizer-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-visualizer"
   min_size             = var.visualizer_replicas
   max_size             = var.visualizer_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -372,6 +376,7 @@ module "ec2_asg_visualizer" {
   docker_compose_config = {
     docker_image = var.visualizer_docker_image
   }
+  docker_compose_systemd_unit = "omni-obs-visualizer"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -382,7 +387,7 @@ module "ec2_asg_sig_provider" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-sig-provider-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-sig-provider"
   min_size             = var.sig_provider_replicas
   max_size             = var.sig_provider_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -402,6 +407,7 @@ module "ec2_asg_sig_provider" {
   docker_compose_config = {
     docker_image = var.sig_provider_docker_image
   }
+  docker_compose_systemd_unit = "omni-obs-sig-provider"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -412,7 +418,7 @@ module "ec2_asg_stats" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-stats-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-stats"
   min_size             = var.stats_replicas
   max_size             = var.stats_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -436,6 +442,7 @@ module "ec2_asg_stats" {
     postgres_host     = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     create_database   = var.stats_create_database
   }
+  docker_compose_systemd_unit = "omni-obs-stats"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -446,7 +453,7 @@ module "ec2_asg_eth_bytecode_db" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-eth-bytecode-db-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-eth-bytecode-db"
   min_size             = var.eth_bytecode_db_replicas
   max_size             = var.eth_bytecode_db_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -471,6 +478,7 @@ module "ec2_asg_eth_bytecode_db" {
     verifier_url      = var.verifier_enabled ? (var.verifier_url != "" ? var.verifier_url : "http://${module.alb_verifier[0].lb_dns_name}") : var.verifier_url
     create_database   = var.eth_bytecode_db_create_database
   }
+  docker_compose_systemd_unit = "omni-obs-eth-bytecode-db"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -481,7 +489,7 @@ module "ec2_asg_xchain_indexer" {
   block_devices = var.block_devices
   count         = var.xchain_settings["enabled"] ? 1 : 0
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-xchain-indexer-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-indexer"
   min_size             = 1
   max_size             = 1
   vpc_zone_identifier  = var.existed_vpc_id != "" ? slice(var.existed_private_subnets_ids, 0, 1) : slice(module.vpc[0].private_subnets, 0, 1)
@@ -507,6 +515,7 @@ module "ec2_asg_xchain_indexer" {
     api                         = false
     indexer                     = true
   }
+  docker_compose_systemd_unit = "omni-obs-xchain-indexer"
   xchain_config_file_content  = var.xchain_settings["config_file_content"]
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
@@ -518,7 +527,7 @@ module "ec2_asg_xchain_api" {
   count         = var.xchain_settings["enabled"] ? 1 : 0
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-xchain-api-instances"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-api"
   min_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
   max_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -544,6 +553,7 @@ module "ec2_asg_xchain_api" {
     api                         = true
     indexer                     = false
   }
+  docker_compose_systemd_unit = "omni-obs-xchain-api"
   xchain_config_file_content  = var.xchain_settings["config_file_content"]
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env

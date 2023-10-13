@@ -67,3 +67,6 @@ variable "docker_compose_file_postfix" {
   type    = string
   default = ""
 }
+variable "docker_compose_systemd_unit" {
+  type    = string
+}
