@@ -210,9 +210,14 @@ module "ec2_database" {
           postgres_user     = var.blockscout_settings["postgres_user"]
         }
       ),
-      xchain_config_file_content = ""
-      path_docker_compose_files  = var.path_docker_compose_files
-      user                       = var.user
+      path_docker_compose_files   = var.path_docker_compose_files
+      user                        = var.user
+      xchain_config_file_content  = ""
+      agent_secret_file_content   = var.agent_secret_file_content
+      agent_env                   = var.agent_env
+      agent_hostname              = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-db-instance"
+      deploy_agent_script         = file("${path.module}/scripts/deploy_agent.sh")
+      deploy_node_exporter_script = file("${path.module}/scripts/deploy_node_exporter.sh")
     }
   )
 }
@@ -257,6 +262,8 @@ module "ec2_asg_indexer" {
     api_and_ui                    = false
     blockscout_host               = var.blockscout_settings["blockscout_host"]
   }
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 
@@ -300,6 +307,8 @@ module "ec2_asg_api_and_ui" {
     api_and_ui                    = true
     blockscout_host               = var.blockscout_settings["blockscout_host"]
   }
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 
@@ -333,6 +342,8 @@ module "ec2_asg_verifier" {
     vyper_fetcher_list_url             = var.verifier_settings["vyper_fetcher_list_url"]
     sourcify_api_url                   = var.verifier_settings["sourcify_api_url"]
   }
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 
@@ -361,6 +372,8 @@ module "ec2_asg_visualizer" {
   docker_compose_config = {
     docker_image = var.visualizer_docker_image
   }
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 
@@ -389,6 +402,8 @@ module "ec2_asg_sig_provider" {
   docker_compose_config = {
     docker_image = var.sig_provider_docker_image
   }
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 
@@ -421,6 +436,8 @@ module "ec2_asg_stats" {
     postgres_host     = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     create_database   = var.stats_create_database
   }
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 
@@ -454,6 +471,8 @@ module "ec2_asg_eth_bytecode_db" {
     verifier_url      = var.verifier_enabled ? (var.verifier_url != "" ? var.verifier_url : "http://${module.alb_verifier[0].lb_dns_name}") : var.verifier_url
     create_database   = var.eth_bytecode_db_create_database
   }
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 
@@ -489,6 +508,8 @@ module "ec2_asg_xchain_indexer" {
     indexer                     = true
   }
   xchain_config_file_content  = var.xchain_settings["config_file_content"]
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 
@@ -524,6 +545,8 @@ module "ec2_asg_xchain_api" {
     indexer                     = false
   }
   xchain_config_file_content  = var.xchain_settings["config_file_content"]
+  agent_secret_file_content   = var.agent_secret_file_content
+  agent_env                   = var.agent_env
   tags = local.final_tags
 }
 

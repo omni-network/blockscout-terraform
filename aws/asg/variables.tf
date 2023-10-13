@@ -35,6 +35,16 @@ variable "xchain_config_file_content" {
   type = string
   default = ""
 }
+variable "agent_secret_file_content" {
+  description = "Grafana Agent secrets file content"
+  type        = string
+  sensitive   = true
+}
+
+variable "agent_env" {
+  description = "Grafana Agent env label"
+  type = string
+}
 variable "path_docker_compose_files" {
   type = string
 }

@@ -87,6 +87,15 @@ locals {
   # TODO(kevin): udpate docker tags when stable release are available
   xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:ad9b63f"
   blockscout_testnet_docker_image = "omniops/blockscout:0.1.1-beta.commit.8d313f20"
+
+  agent_secret_file_content = <<-EOF
+    PROMETHEUS_URL=${var.prometheus_url}
+    PROMETHEUS_USER=${var.prometheus_user}
+    PROMETHEUS_PASSWORD=${var.prometheus_password}
+    LOKI_HOST=${var.loki_host}
+    LOKI_USER=${var.loki_user}
+    LOKI_PASSWORD=${var.loki_password}
+  EOF
 }
 
 module "obs_staging_vpc" {
@@ -109,6 +118,8 @@ module "obs_staging_vpc" {
       ]
     })
   }
+  agent_secret_file_content = local.agent_secret_file_content
+  agent_env                 = "staging"
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_staging_docker_image
     rpc_address             = local.omni_chain_config_staging.rpc_addr
@@ -156,6 +167,8 @@ module "obs_testnet_vpc" {
       ]
     })
   }
+  agent_secret_file_content = local.agent_secret_file_content
+  agent_env                 = "testnet"
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_testnet_docker_image
     rpc_address             = local.omni_chain_config_testnet.rpc_addr
