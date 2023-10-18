@@ -210,7 +210,6 @@ module "ec2_database" {
           postgres_user     = var.blockscout_settings["postgres_user"]
         }
       ),
-      docker_compose_systemd_unit = "omni-obs-db"
       path_docker_compose_files   = var.path_docker_compose_files
       user                        = var.user
       xchain_config_file_content  = ""
@@ -263,7 +262,6 @@ module "ec2_asg_indexer" {
     api_and_ui                    = false
     blockscout_host               = var.blockscout_settings["blockscout_host"]
   }
-  docker_compose_systemd_unit = "omni-obs-indexer"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -309,7 +307,6 @@ module "ec2_asg_api_and_ui" {
     api_and_ui                    = true
     blockscout_host               = var.blockscout_settings["blockscout_host"]
   }
-  docker_compose_systemd_unit = "omni-obs-api-ui"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -345,7 +342,6 @@ module "ec2_asg_verifier" {
     vyper_fetcher_list_url             = var.verifier_settings["vyper_fetcher_list_url"]
     sourcify_api_url                   = var.verifier_settings["sourcify_api_url"]
   }
-  docker_compose_systemd_unit = "omni-obs-verifier"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -376,7 +372,6 @@ module "ec2_asg_visualizer" {
   docker_compose_config = {
     docker_image = var.visualizer_docker_image
   }
-  docker_compose_systemd_unit = "omni-obs-visualizer"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -407,7 +402,6 @@ module "ec2_asg_sig_provider" {
   docker_compose_config = {
     docker_image = var.sig_provider_docker_image
   }
-  docker_compose_systemd_unit = "omni-obs-sig-provider"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -442,7 +436,6 @@ module "ec2_asg_stats" {
     postgres_host     = var.deploy_rds_db ? module.rds[0].db_instance_address : module.ec2_database[0].private_dns
     create_database   = var.stats_create_database
   }
-  docker_compose_systemd_unit = "omni-obs-stats"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -478,7 +471,6 @@ module "ec2_asg_eth_bytecode_db" {
     verifier_url      = var.verifier_enabled ? (var.verifier_url != "" ? var.verifier_url : "http://${module.alb_verifier[0].lb_dns_name}") : var.verifier_url
     create_database   = var.eth_bytecode_db_create_database
   }
-  docker_compose_systemd_unit = "omni-obs-eth-bytecode-db"
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
   tags = local.final_tags
@@ -515,7 +507,6 @@ module "ec2_asg_xchain_indexer" {
     api                         = false
     indexer                     = true
   }
-  docker_compose_systemd_unit = "omni-obs-xchain-indexer"
   xchain_config_file_content  = var.xchain_settings["config_file_content"]
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env
@@ -553,7 +544,6 @@ module "ec2_asg_xchain_api" {
     api                         = true
     indexer                     = false
   }
-  docker_compose_systemd_unit = "omni-obs-xchain-api"
   xchain_config_file_content  = var.xchain_settings["config_file_content"]
   agent_secret_file_content   = var.agent_secret_file_content
   agent_env                   = var.agent_env

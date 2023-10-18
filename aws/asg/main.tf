@@ -47,7 +47,6 @@ module "ec2_asg" {
       agent_env                   = var.agent_env
       deploy_agent_script         = file("${path.module}/../scripts/deploy_agent.sh")
       deploy_node_exporter_script = file("${path.module}/../scripts/deploy_node_exporter.sh")
-      docker_compose_systemd_unit = var.docker_compose_systemd_unit
     }
   ))
   block_device_mappings = var.block_devices

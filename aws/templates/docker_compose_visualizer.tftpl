@@ -10,3 +10,5 @@ services:
       - 8050:8050
     volumes:
       - ./logs/:/app/logs/
+    logging:
+      driver: journald
