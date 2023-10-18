@@ -58,7 +58,7 @@ EOT
 # Disable journal to syslog forwarding
 echo "ForwardToSyslog=no" >> /etc/systemd/journald.conf
 systemctl daemon-reload
-system systemctl restart systemd-journald
+systemctl restart systemd-journald
 
 # Start docker-compose via systemd
 systemctl enable docker_compose
