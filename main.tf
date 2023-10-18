@@ -119,7 +119,7 @@ module "obs_staging_vpc" {
     })
   }
   agent_secret_file_content = local.agent_secret_file_content
-  agent_env                 = "staging"
+  agent_env                 = "staging-obs"
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_staging_docker_image
     rpc_address             = local.omni_chain_config_staging.rpc_addr
@@ -168,7 +168,7 @@ module "obs_testnet_vpc" {
     })
   }
   agent_secret_file_content = local.agent_secret_file_content
-  agent_env                 = "testnet"
+  agent_env                 = "testnet-obs"
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_testnet_docker_image
     rpc_address             = local.omni_chain_config_testnet.rpc_addr

@@ -188,7 +188,7 @@ module "ec2_database" {
   source                      = "terraform-aws-modules/ec2-instance/aws"
   version                     = "4.2.1"
   count                       = var.deploy_ec2_instance_db ? 1 : 0
-  name                        = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-db-instance"
+  name                        = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-db"
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.medium"
   monitoring                  = false
@@ -226,7 +226,7 @@ module "ec2_asg_indexer" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-indexer-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-indexer"
   min_size             = 1
   max_size             = 1
   vpc_zone_identifier  = var.existed_vpc_id != "" ? slice(var.existed_private_subnets_ids, 0, 1) : slice(module.vpc[0].private_subnets, 0, 1)
@@ -271,7 +271,7 @@ module "ec2_asg_api_and_ui" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-api-and-ui-instances"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-api-ui"
   min_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
   max_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -317,7 +317,7 @@ module "ec2_asg_verifier" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-verifier-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-verifier"
   min_size             = var.verifier_replicas
   max_size             = var.verifier_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -352,7 +352,7 @@ module "ec2_asg_visualizer" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-visualizer-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-visualizer"
   min_size             = var.visualizer_replicas
   max_size             = var.visualizer_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -382,7 +382,7 @@ module "ec2_asg_sig_provider" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-sig-provider-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-sig-provider"
   min_size             = var.sig_provider_replicas
   max_size             = var.sig_provider_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -412,7 +412,7 @@ module "ec2_asg_stats" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-stats-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-stats"
   min_size             = var.stats_replicas
   max_size             = var.stats_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -446,7 +446,7 @@ module "ec2_asg_eth_bytecode_db" {
   source        = "./asg"
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-eth-bytecode-db-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-eth-bytecode-db"
   min_size             = var.eth_bytecode_db_replicas
   max_size             = var.eth_bytecode_db_replicas
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets
@@ -481,7 +481,7 @@ module "ec2_asg_xchain_indexer" {
   block_devices = var.block_devices
   count         = var.xchain_settings["enabled"] ? 1 : 0
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-xchain-indexer-instance"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-indexer"
   min_size             = 1
   max_size             = 1
   vpc_zone_identifier  = var.existed_vpc_id != "" ? slice(var.existed_private_subnets_ids, 0, 1) : slice(module.vpc[0].private_subnets, 0, 1)
@@ -518,7 +518,7 @@ module "ec2_asg_xchain_api" {
   count         = var.xchain_settings["enabled"] ? 1 : 0
   block_devices = var.block_devices
   ## ASG settings
-  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-asg-xchain-api-instances"
+  name                 = "${var.vpc_name != "" ? var.vpc_name : "existed-vpc"}-xchain-api"
   min_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
   max_size             = length(var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets)
   vpc_zone_identifier  = var.existed_vpc_id != "" ? var.existed_private_subnets_ids : module.vpc[0].private_subnets

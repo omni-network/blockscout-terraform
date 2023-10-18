@@ -200,14 +200,20 @@ logs:
             env: ${ENV}
         relabel_configs:
 
-          # Only select logs from 'omni*' units
+          # Only select logs from 'omni*' or 'docker' units
         - action: keep
           source_labels: [__journal__systemd_unit]
-          regex: omni.*
+          regex: (omni.*|docker.*)
 
           # Remove the '.service' suffix and relabel as 'app'
         - source_labels: [__journal__systemd_unit]
-          regex: (.*)\.service
+          regex: (.+)\.service
+          replacement: \${1}
+          target_label: app
+
+          # Override 'app' label with 'container_name' if present.
+        - source_labels: [__journal_container_name]
+          regex: (.+)
           replacement: \${1}
           target_label: app
 

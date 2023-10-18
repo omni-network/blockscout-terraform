@@ -17,3 +17,5 @@ services:
       - 8051:8051
     volumes:
       - ./logs/:/app/logs/
+    logging:
+      driver: journald

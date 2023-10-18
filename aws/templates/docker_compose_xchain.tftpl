@@ -31,3 +31,5 @@ services:
                 target: ${xchain_config_file_path}
             ports:
             - 4000:4000
+            logging:
+              driver: journald
