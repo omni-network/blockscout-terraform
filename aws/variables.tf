@@ -10,9 +10,10 @@ variable "deploy_ec2_instance_db" {
   default     = true
 }
 variable "rds_instance_type" {
+  #required if deploy_rds_db=true
   description = "AWS RDS instance type"
   type        = string
-  default     = "db.t3.large"
+  default     = ""
 }
 variable "rds_allocated_storage" {
   description = "Size of rds storage"
@@ -145,10 +146,10 @@ variable "single_nat_gateway" {
 variable "xchain_settings" {
   description = "Settings of verifier"
   type = object({
-    enabled                     = optional(bool, false)
-    docker_image                = optional(string, "omniops/xchain-indexer:latest")
-    config_file_path            = optional(string, "/config/config.json")
-    config_file_content         = optional(string, "")
+    enabled             = optional(bool, false)
+    docker_image        = optional(string, "omniops/xchain-indexer:latest")
+    config_file_path    = optional(string, "/config/config.json")
+    config_file_content = optional(string, "")
   })
   default = {}
 }
@@ -162,7 +163,7 @@ variable "agent_secret_file_content" {
 
 variable "agent_env" {
   description = "Grafana Agent env label"
-  type = string
+  type        = string
 }
 
 ## Blockscout settings

@@ -106,7 +106,8 @@ module "obs_staging_vpc" {
   ssl_certificate_arn                    = var.ssl_certificate_arn
   create_iam_instance_profile_ssm_policy = "true"
   deploy_ec2_instance_db                 = false
-  deploy_rds_db                          = true
+  deploy_rds_db                          = true # TODO(corver): Staging probably doesn't require a long-lived rds instance.
+  rds_instance_type                      = "db.t4g.micro"
   xchain_settings = {
     enabled             = true
     docker_image        = local.xchain_indexer_staging_docker_image
@@ -156,6 +157,7 @@ module "obs_testnet_vpc" {
   create_iam_instance_profile_ssm_policy = "true"
   deploy_ec2_instance_db                 = false
   deploy_rds_db                          = true
+  rds_instance_type                      = "db.t4g.xlarge"
   xchain_settings = {
     enabled             = true
     docker_image        = local.xchain_indexer_testnet_docker_image
