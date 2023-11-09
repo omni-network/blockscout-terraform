@@ -180,7 +180,8 @@ module "rds" {
   create_cloudwatch_log_group         = false
   backup_retention_period             = 7
   skip_final_snapshot                 = true
-  deletion_protection                 = false
+  deletion_protection                 = false # TODO(corver): This should probably be true for testnet and mainnet.
+  performance_insights_enabled        = true
   tags                                = local.final_tags
 }
 
