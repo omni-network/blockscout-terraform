@@ -17,5 +17,5 @@ variable "deploy_staging_blockscout" {
 variable "deploy_testnet_blockscout" {
   description = "Whether to deploy the testnet blockscout service."
   type        = bool
-  default     = true
+  default     = false
 }
