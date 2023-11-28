@@ -10,3 +10,5 @@ services:
         POSTGRES_USER: '${postgres_user}'
     ports:
       - 5432:5432
+    logging:
+      driver: journald

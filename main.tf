@@ -86,7 +86,16 @@ locals {
 
   # TODO(kevin): udpate docker tags when stable release are available
   xchain_indexer_testnet_docker_image = "omniops/xchain-indexer:ad9b63f"
-  blockscout_testnet_docker_image     = "omniops/blockscout:0.1.1-beta.commit.8d313f20"
+  blockscout_testnet_docker_image = "omniops/blockscout:0.1.1-beta.commit.8d313f20"
+
+  agent_secret_file_content = <<-EOF
+    PROMETHEUS_URL=${var.prometheus_url}
+    PROMETHEUS_USER=${var.prometheus_user}
+    PROMETHEUS_PASSWORD=${var.prometheus_password}
+    LOKI_HOST=${var.loki_host}
+    LOKI_USER=${var.loki_user}
+    LOKI_PASSWORD=${var.loki_password}
+  EOF
 }
 
 module "obs_staging_vpc" {
@@ -97,7 +106,8 @@ module "obs_staging_vpc" {
   ssl_certificate_arn                    = var.ssl_certificate_arn
   create_iam_instance_profile_ssm_policy = "true"
   deploy_ec2_instance_db                 = false
-  deploy_rds_db                          = true
+  deploy_rds_db                          = true # TODO(corver): Staging probably doesn't require a long-lived rds instance.
+  rds_instance_type                      = "db.t4g.micro"
   verifier_replicas                      = 1
   visualizer_replicas                    = 1
   sig_provider_replicas                  = 1
@@ -114,6 +124,8 @@ module "obs_staging_vpc" {
       ]
     })
   }
+  agent_secret_file_content = local.agent_secret_file_content
+  agent_env                 = "staging-obs"
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_staging_docker_image
     rpc_address             = local.omni_chain_config_staging.rpc_addr
@@ -150,6 +162,7 @@ module "obs_testnet_vpc" {
   create_iam_instance_profile_ssm_policy = "true"
   deploy_ec2_instance_db                 = false
   deploy_rds_db                          = true
+  rds_instance_type                      = "db.t4g.xlarge"
   xchain_settings = {
     enabled          = true
     docker_image     = local.xchain_indexer_testnet_docker_image
@@ -161,6 +174,8 @@ module "obs_testnet_vpc" {
       ]
     })
   }
+  agent_secret_file_content = local.agent_secret_file_content
+  agent_env                 = "testnet-obs"
   blockscout_settings = {
     blockscout_docker_image = local.blockscout_testnet_docker_image
     rpc_address             = local.omni_chain_config_testnet.rpc_addr
