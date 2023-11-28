@@ -14,73 +14,73 @@ provider "cloudflare" {
 locals {
   omni_staging_ws = "ws://staging.omni.network:8546"
   omni_chain_config_staging = {
-    rpc_addr = "http://staging.omni.network:8545"
-    default_start_block = 0
+    rpc_addr                 = "http://staging.omni.network:8545"
+    default_start_block      = 0
     confirmation_block_count = 0
-    sync_interval = 10
-    omni_predeploy_addr = "0x1212400000000000000000000000000000000001"
+    sync_interval            = 10
+    omni_predeploy_addr      = "0x1212400000000000000000000000000000000001"
   }
   external_chains_staging = [
     {
-      chain_name = "chain-a"
-      rpc_addr = "http://staging.omni.network:6545"
-      default_start_block = -1
+      chain_name               = "chain-a"
+      rpc_addr                 = "http://staging.omni.network:6545"
+      default_start_block      = -1
       confirmation_block_count = 10
-      sync_interval = 30
-      portal_addr = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
+      sync_interval            = 30
+      portal_addr              = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
     },
     {
-      chain_name = "chain-b"
-      rpc_addr = "http://staging.omni.network:7545"
-      default_start_block = -1
+      chain_name               = "chain-b"
+      rpc_addr                 = "http://staging.omni.network:7545"
+      default_start_block      = -1
       confirmation_block_count = 10
-      sync_interval = 30
-      portal_addr = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
+      sync_interval            = 30
+      portal_addr              = "0x7965Bb94fD6129B4Ac9028243BeFA0fACe1d7286"
     }
   ]
   xchain_indexer_staging_docker_image = "omniops/xchain-indexer:ad9b63f"
-  blockscout_staging_docker_image = "omniops/blockscout:0.1.1-beta.commit.8d313f20"
+  blockscout_staging_docker_image     = "omniops/blockscout:0.1.1-beta.commit.8d313f20"
 
   omni_testnet_ws = "ws://${var.testnet_sentry_node_url}:8546"
   omni_chain_config_testnet = {
-    rpc_addr = "http://${var.testnet_sentry_node_url}:8545"
-    default_start_block = 0
+    rpc_addr                 = "http://${var.testnet_sentry_node_url}:8545"
+    default_start_block      = 0
     confirmation_block_count = 0
-    sync_interval = 10
-    omni_predeploy_addr = "0x1212400000000000000000000000000000000001"
+    sync_interval            = 10
+    omni_predeploy_addr      = "0x1212400000000000000000000000000000000001"
   }
   external_chains_testnet = [
     {
-      chain_name = "optimism-goerli"
-      rpc_addr = "https://optimism-goerli.infura.io/v3/${var.infura_api_key}"
-      default_start_block = -1
+      chain_name               = "optimism-goerli"
+      rpc_addr                 = "https://optimism-goerli.infura.io/v3/${var.infura_api_key}"
+      default_start_block      = -1
       confirmation_block_count = 10
-      sync_interval = 30
-      portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
+      sync_interval            = 30
+      portal_addr              = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
-      chain_name = "arbitrum-goerli"
-      rpc_addr = "https://arbitrum-goerli.infura.io/v3/${var.infura_api_key}"
-      default_start_block = -1
+      chain_name               = "arbitrum-goerli"
+      rpc_addr                 = "https://arbitrum-goerli.infura.io/v3/${var.infura_api_key}"
+      default_start_block      = -1
       confirmation_block_count = 10
-      sync_interval = 30
-      portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
+      sync_interval            = 30
+      portal_addr              = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
-      chain_name = "linea-goerli"
-      rpc_addr = "https://linea-goerli.infura.io/v3/${var.infura_api_key}"
-      default_start_block = -1
+      chain_name               = "linea-goerli"
+      rpc_addr                 = "https://linea-goerli.infura.io/v3/${var.infura_api_key}"
+      default_start_block      = -1
       confirmation_block_count = 10
-      sync_interval = 30
-      portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
+      sync_interval            = 30
+      portal_addr              = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     },
     {
-      chain_name = "scroll-sepolia"
-      rpc_addr = "http://archive-node.sepolia.scroll.xyz:8545"
-      default_start_block = -1
+      chain_name               = "scroll-sepolia"
+      rpc_addr                 = "http://archive-node.sepolia.scroll.xyz:8545"
+      default_start_block      = -1
       confirmation_block_count = 10
-      sync_interval = 30
-      portal_addr = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
+      sync_interval            = 30
+      portal_addr              = "0xcbbc5Da52ea2728279560Dca8f4ec08d5F829985"
     }
   ]
 
@@ -108,10 +108,15 @@ module "obs_staging_vpc" {
   deploy_ec2_instance_db                 = false
   deploy_rds_db                          = true # TODO(corver): Staging probably doesn't require a long-lived rds instance.
   rds_instance_type                      = "db.t4g.micro"
+  verifier_replicas                      = 1
+  visualizer_replicas                    = 1
+  sig_provider_replicas                  = 1
+  stats_replicas                         = 1
+  eth_bytecode_db_replicas               = 1
   xchain_settings = {
-    enabled             = true
-    docker_image        = local.xchain_indexer_staging_docker_image
-    config_file_path    = "/config/config.json"
+    enabled          = true
+    docker_image     = local.xchain_indexer_staging_docker_image
+    config_file_path = "/config/config.json"
     config_file_content = jsonencode({
       omni_config = local.omni_chain_config_staging,
       external_chains = [
@@ -159,9 +164,9 @@ module "obs_testnet_vpc" {
   deploy_rds_db                          = true
   rds_instance_type                      = "db.t4g.xlarge"
   xchain_settings = {
-    enabled             = true
-    docker_image        = local.xchain_indexer_testnet_docker_image
-    config_file_path    = "/config/config.json"
+    enabled          = true
+    docker_image     = local.xchain_indexer_testnet_docker_image
+    config_file_path = "/config/config.json"
     config_file_content = jsonencode({
       omni_config = local.omni_chain_config_testnet,
       external_chains = [
