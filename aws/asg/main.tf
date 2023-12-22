@@ -39,22 +39,18 @@ module "ec2_asg" {
         "${path.module}/../templates/docker_compose${var.docker_compose_file_postfix}.tftpl",
         var.docker_compose_config
       )
-      path_docker_compose_files = var.path_docker_compose_files
-      user                      = var.user
+      xchain_config_file_content  = var.xchain_config_file_content
+      path_docker_compose_files   = var.path_docker_compose_files
+      user                        = var.user
+      agent_secret_file_content   = var.agent_secret_file_content
+      agent_hostname              = var.name
+      agent_env                   = var.agent_env
+      deploy_agent_script         = file("${path.module}/../scripts/deploy_agent.sh")
+      deploy_node_exporter_script = file("${path.module}/../scripts/deploy_node_exporter.sh")
     }
   ))
-  block_device_mappings = [
-    {
-      device_name = "/dev/xvda"
-      no_device   = 0
-      ebs = {
-        delete_on_termination = true
-        encrypted             = false
-        volume_size           = 30
-        volume_type           = "gp2"
-      }
-    }
-  ]
+  block_device_mappings = var.block_devices
+
   network_interfaces = [
     {
       delete_on_termination = true

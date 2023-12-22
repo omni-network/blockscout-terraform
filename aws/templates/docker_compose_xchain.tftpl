@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+%{ if api ~}
+      api:
+            container_name: 'xchain-api'
+            entrypoint:
+            - /bin/indexer
+            - api
+            - --config-file=${xchain_config_file_path}
+            - --port=4000
+%{ endif ~}
+%{ if indexer ~}
+      indexer:
+            container_name: 'xchain-indexer'
+            entrypoint:
+            - /bin/indexer
+            - index
+            - --config-file=${xchain_config_file_path}
+%{ endif ~}
+            image: ${xchain_indexer_docker_image}
+            restart: always
+            environment:
+                  DB_HOST: ${postgres_host}
+                  DB_PORT: "5432"
+                  DB_NAME: blockscout
+                  DB_USER: ${postgres_user}
+                  DB_PASSWORD: ${postgres_password}
+            volumes:
+              - type: bind
+                source: /xchain_indexer_config_to_mount.json
+                target: ${xchain_config_file_path}
+            ports:
+            - 4000:4000
+            logging:
+              driver: journald
